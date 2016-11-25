@@ -1,0 +1,14 @@
+{{outlet}}
+<div class="row">
+  <div class="col-md-4">
+    <h2>MyWallet</h2>
+    <p>Your balance is {{balance}}</p>
+
+    <h3>Addresses</h3>
+    <ul>
+    {{#each addresses as |address|}}
+      <li>{{address}}</li>
+    {{/each}}
+    </ul>
+  </div>
+</div>

@@ -7,6 +7,9 @@ module.exports = function(defaults) {
     // Add options here
   });
 
+  app.import('vendor/lightwallet.min.js');
+  app.import('vendor/hooked-web3-provider.min.js');
+
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //
