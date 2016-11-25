@@ -1,0 +1,27 @@
+{{outlet}}
+
+<div class="container-fluid">
+	<div class="row">
+		<h2>Whisper</h2>
+		<div class="col-md-2">
+			<form {{action 'whisper' on='submit'}}>
+				<div class="form-group">
+					<label for="inputTopic">Topic</label>
+					{{input value=topic type="text" id="inputTopic" class="form-control" required="true" autofocus=""}}
+				</div>
+				<div class="form-group">
+					<label for="inputPayload">Payload</label>
+					{{input value=payload type="text" id="inputPayload" class="form-control" required="true" }}
+				</div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Whisper</button>
+			</form>
+		</div>
+	</div>
+
+	<div class="row">
+		<h2>Messages</h2>
+		{{#each messages as |message|}}
+			<div class="alert alert-info">{{message}}</div>
+		{{/each}}
+	</div>
+</div>
