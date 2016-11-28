@@ -13,19 +13,24 @@ export default Ember.Controller.extend({
     let web3 = this.get('web3.web3Instance');
 
     if (!this.get('requestFilter')) {
+      let localIdentityRequests = JSON.parse(localStorage.getItem('identityRequests'));
+      let identityRequests = self.get('identityRequests');
+
+      if (localIdentityRequests) {
+        identityRequests.pushObjects(localIdentityRequests);
+      }
+
       let requestFilter = web3.shh.filter({
         topics: [web3.fromAscii('identity-request-broadcast')]
       }).watch(function (err, result) {
-
         result.payload = web3.toAscii(result.payload);
         result.sent = new Date(result.sent * 1000);
-
-        let identityRequests = self.get("identityRequests");
 
         if (!identityRequests.isAny('hash', result.hash)) {
           result.accepted = false;
           result.ignored = false;
           identityRequests.pushObject(result);
+          localStorage.setItem('identityRequests', JSON.stringify(identityRequests));
         }
       });
 
@@ -36,9 +41,12 @@ export default Ember.Controller.extend({
   actions: {
     ignore: function (request) {
       Ember.set(request, 'ignored', true);
+      localStorage.setItem('identityRequests', JSON.stringify(this.get('identityRequests')));
     },
 
     accept: function (request) {
+
+      let self = this;
       let web3 = this.get('web3.web3Instance');
       var identity = web3.shh.newIdentity();
 
@@ -54,6 +62,7 @@ export default Ember.Controller.extend({
       web3.shh.post(message, function (err, result) {
         if (result) {
           Ember.set(request, 'accepted', true);
+          localStorage.setItem('identityRequests', JSON.stringify(self.get('identityRequests')));
         }
       });
     }
