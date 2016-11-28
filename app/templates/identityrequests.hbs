@@ -1,0 +1,49 @@
+{{outlet}}
+
+<div class="container-fluid">
+	<div class="row">
+		<h2>Identity Requests</h2>
+		{{#each identityRequests as |request index|}}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					You have received an identity request from <strong>{{request.from}}</strong>
+				</div>
+				<div class="panel-body">
+					<dl class="dl-horizontal">
+						<dt>Expiry</dt>
+						<dd>{{request.expiry}}</dd>
+						<dt>From</dt>
+						<dd>{{request.from}}</dd>
+						<dt>To</dt>
+						<dd>{{request.to}}</dd>
+						<dt>Hash</dt>
+						<dd>{{request.hash}}</dd>
+						<dt>Sent</dt>
+						<dd>{{request.sent}}</dd>
+						<dt>TTL</dt>
+						<dd>{{request.ttl}}</dd>
+						<dt>Work Proved</dt>
+						<dd>{{request.ttl}}</dd>
+						<dt>Payload</dt>
+						<dd>{{request.payload}}</dd>
+					</dl>
+				</div>
+				<div class="panel-footer">
+					{{#if request.ignored}}
+						<span class="text-danger">Identity request ignored</span>
+					{{else if request.accepted}}
+						<span class="text-success">Identity sent</span>
+					{{else}}
+						<button class="btn btn-sm btn-success" {{action "accept" request}}>
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span>Send identity</span>
+						</button>
+						<button class="btn btn-sm btn-danger" {{action "ignore" request}}>
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							<span>Ignore request</span>
+						</button>
+					{{/if}}
+				</div>
+			</div>
+		{{/each}}
+	</div>
+</div>
