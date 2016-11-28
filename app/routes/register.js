@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { getProvider } from '../utils/web3-utils';
 
 export default Ember.Route.extend({
   web3: Ember.inject.service(),
@@ -8,9 +9,10 @@ export default Ember.Route.extend({
       var credentials = this.controller.getProperties('identification', 'password');
 
       var self = this;
-      this.registerAccount(credentials).then(function(provider) {
+      this.registerAccount(credentials).then(function(keystore) {
         let web3Instance = self.get('web3.web3Instance');
-        web3Instance.setProvider(provider);
+        let provider = getProvider(keystore);
+        web3Instance.setProvider(getProvider(keystore));
         self.transitionTo('mywallet', { queryParams: {addresses: provider.transaction_signer.getAddresses()}});
       });
     }
@@ -30,22 +32,19 @@ export default Ember.Route.extend({
       }, function (err, ks) {
 
         ks.keyFromPassword(credentials.password, function (err, pwDerivedKey) {
-          if (err) throw err;
+          if (err) {
+            throw err;
+          }
 
           ks.generateNewAddress(pwDerivedKey, 5);
-          var addr = ks.getAddresses();
 
           ks.passwordProvider = function (callback) {
             var pw = prompt("Please enter password", "Password");
             callback(null, pw);
           };
 
-          var provider = new HookedWeb3Provider({
-            host: "http://localhost:8545",
-            transaction_signer: ks
-          });
-
-          resolve(provider);
+          localStorage.setItem(credentials.identification, ks.serialize());
+          resolve(ks);
         });
       });
     });
