@@ -7,6 +7,7 @@ module.exports = function(defaults) {
     // Add options here
   });
 
+  app.import('bower_components/web3/dist/web3.min.js');
   app.import('vendor/lightwallet.min.js');
   app.import('vendor/hooked-web3-provider.min.js');
 

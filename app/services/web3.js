@@ -34,8 +34,7 @@ export default Service.extend({
         ks.keyFromPassword(credentials.password, function (err, pwDerivedKey) {
           if (err) {
             throw err;
-          }
-          console.log(pwDerivedKey);
+          }          
 
           ks.generateNewAddress(pwDerivedKey, 5);
 
@@ -44,7 +43,7 @@ export default Service.extend({
             callback(null, pw);
           };
 
-          localStorage.setItem(credentials.identification, ks.serialize());          
+          localStorage.setItem(credentials.identification, ks.serialize());
           self.set("web3Instance", new Web3(self.getProvider(ks, hostname)));
           resolve();
         });
@@ -56,6 +55,6 @@ export default Service.extend({
     return new HookedWeb3Provider({
       host: host,
       transaction_signer: keystore
-    })
+    });
   }
 });
