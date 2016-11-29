@@ -20,8 +20,7 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    },
-    web3Provider: 'http://localhost:8545'
+    }
   };
 
   if (environment === 'development') {
