@@ -1,0 +1,20 @@
+{{outlet}}
+
+<div class="row">
+  <div class="col-md-4">
+    <h2>Transaction log</h2>
+    <h3>There are {{count}} transactions</h3>
+    {{#each log as |item|}}
+      <dl>
+        <dt>Block number</dt>
+        <dd>{{item.blockNumber}}</dd>
+        <dt>Transaction address</dt>
+        <dd>{{item.address}}</dd>
+        <dt>Transaction hash</dt>
+        <dd>{{item.transactionHash}}</dd>
+        <dt>Data</dt>
+        <dd>{{item.data}}</dd>
+      </dl>
+    {{/each}}
+  </div>
+</div>

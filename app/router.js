@@ -12,6 +12,7 @@ Router.map(function() {
   this.route('mywallet');
   this.route('whisper');
   this.route('identityrequests');
+  this.route('log');
 });
 
 export default Router;
