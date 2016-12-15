@@ -13,8 +13,8 @@
 				<div class="form-group">
 					<label for="inputTopic">Topic</label>
 					<select class="form-control" id="inputTopic" onchange={{action "topicChanged" value="target.value"}}>
-						{{#each topicNames as |topic|}}
-							<option>{{topic}}</option>
+						{{#each topicNames as |topicName|}}
+							<option selected={{eq topicName topic}}>{{topicName}}</option>
 						{{/each}}
 					</select>
 				</div>
