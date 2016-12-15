@@ -52,11 +52,15 @@ var register = web3.shh.filter({
     if (err) {
         console.log("Failed to read Whisper message", err);
     } else {
-        var registerRequest = JSON.parse(web3.toAscii(result.payload));
-        var email = registerRequest.email;
-        var whisperId = result.from;
+        try {
+            var registerRequest = JSON.parse(web3.toAscii(result.payload));
+            var email = registerRequest.email;
+            var whisperId = result.from;
 
-        ids.set(email, whisperId);
+            ids.set(email, whisperId);
+        } catch (err) {
+            console.log("Failed to interpret Whisper message payload", web3.toAscii(result.payload), err);
+        }
     }
 });
 
@@ -67,9 +71,15 @@ var lookup = web3.shh.filter({
     if (err) {
         console.log("Failed to read Whisper message", err);
     } else {
-        var lookupRequest = JSON.parse(web3.toAscii(result.payload));
-        var email = lookupRequest.email;
-        var whisperId = ids.get(email);
+        var whisperId;
+
+        try {
+            var lookupRequest = JSON.parse(web3.toAscii(result.payload));
+            var email = lookupRequest.email;
+            whisperId = ids.get(email);
+        } catch (err) {
+            console.log("Failed to interpret Whisper message payload", web3.toAscii(result.payload), err);
+        }
 
         if (whisperId) {
             whisper.send(identity, result.from, "identity-service-lookup", {
