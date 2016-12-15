@@ -65,7 +65,7 @@ export default Ember.Controller.extend({
       var topic = this.get('topic');
       var payload = this.get('payload');
 
-      let web3 = this.get('web3.web3Instance');
+      let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
       var identity = web3.shh.newIdentity();
 
       var message = {
