@@ -16,7 +16,7 @@ export default Ember.Controller.extend({
   listenForIdService: function () {
 
     let self = this;
-    let web3 = this.get('web3.web3Instance');
+    let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
     web3.shh.filter({
       topics: [web3.fromAscii('identity-service-advertisement')]
@@ -47,7 +47,7 @@ export default Ember.Controller.extend({
   listen: function () {
 
     let self = this;
-    let web3 = this.get('web3.web3Instance');
+    let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     let filter = web3.shh.filter({
       topics: [web3.fromAscii(this.get('topic'))]
     }).watch(function (err, result) {
