@@ -1,7 +1,6 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
-
   web3: Ember.inject.service(),
 
   listening: false,
@@ -13,7 +12,7 @@ export default Ember.Controller.extend({
   listen: function () {
 
     let self = this;
-    let web3 = this.get('web3.web3Instance');
+    let web3 = this.get("web3").instance();
     let filter = web3.shh.filter({
       topics: [web3.fromAscii(this.get('topic'))]
     }).watch(function (err, result) {
@@ -31,7 +30,7 @@ export default Ember.Controller.extend({
       var topic = this.get('topic');
       var payload = this.get('payload');
 
-      let web3 = this.get('web3.web3Instance');
+      let web3 = this.get("web3").instance();
       var identity = web3.shh.newIdentity();
 
       var message = {

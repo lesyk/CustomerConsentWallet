@@ -1,17 +1,20 @@
 import Ember from 'ember';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
+  web3: Ember.inject.service(),
+
   log: [],
   count: 0,
   filter: null,
 
   setupController: function(controller, model) {
-    let web3Instance = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    let web3 = this.get("web3").instance();
 
     if(filter == null) {
       var that = this;
-      var filter = web3Instance.eth.filter({fromBlock: 0, toBlock: 'pending'});
-      filter.watch(function(error, result) {        
+      var filter = web3.eth.filter({fromBlock: 0, toBlock: 'pending'});
+      filter.watch(function(error, result) {
         if (!error) {
           that.get("log").unshift(result);
           controller.set("log", that.get("log"));

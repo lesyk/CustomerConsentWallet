@@ -15,5 +15,12 @@
       Send greeting
     </button>
     <p>{{greeting}}</p>
+
+    <h3>Consent requests</h3>
+    <ul>
+      {{#each consents as |consent|}}
+        <li>{{consent}}</li>
+      {{/each}}
+    </ul>    
   </div>
 </div>

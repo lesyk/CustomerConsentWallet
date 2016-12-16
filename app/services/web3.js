@@ -2,39 +2,39 @@ import Ember from 'ember';
 const { Service, RSVP: { Promise }, Error } = Ember;
 
 export default Service.extend({
-  web3Instance: null,
+  web3: null,
+  storageKey: "wallet",
 
-  getInstance: function(username, host) {
+  instance: function(host) {
+
     let hostname = host || "http://localhost:8545";
-    if(this.get('web3Instance') === null) {
-      let storage = localStorage.getItem(username);
+    if(this.get('web3') === null) {
+      let storage = localStorage.getItem(this.get("storageKey"));
       if(storage !== null) {
         let keystore = new lightwallet.keystore.deserialize(storage);
-        this.set("web3Instance", new Web3(this.getProvider(keystore, hostname)));
+        this.set("web3", new Web3(this.getProvider(keystore, hostname)));
       } else {
-        console.log("Could not find in local storage");
+        console.log("wallet not set in local storage");
+        return null;
       }
     }
-    return this.get('web3Instance');
+    return this.get('web3');
   },
 
-  register: function(credentials, host) {
+  create: function(seedPhrase, password, host) {
     let hostname = host || "http://localhost:8545";
 
     let self = this;
     return new Promise(function(resolve, reject) {
       lightwallet.keystore.createVault({
-        password: credentials.password,
-        // seedPhrase: seedPhrase, // Optionally provide a 12-word seed phrase
-        // salt: fixture.salt,     // Optionally provide a salt.
-                                   // A unique salt will be generated otherwise.
-        // hdPathString: hdPath    // Optional custom HD Path String
+        password: password,
+        seedPhrase: seedPhrase
       }, function (err, ks) {
 
-        ks.keyFromPassword(credentials.password, function (err, pwDerivedKey) {
+        ks.keyFromPassword(password, function (err, pwDerivedKey) {
           if (err) {
             throw err;
-          }          
+          }
 
           ks.generateNewAddress(pwDerivedKey, 5);
 
@@ -43,12 +43,16 @@ export default Service.extend({
             callback(null, pw);
           };
 
-          localStorage.setItem(credentials.identification, ks.serialize());
-          self.set("web3Instance", new Web3(self.getProvider(ks, hostname)));
+          localStorage.setItem(self.get("storageKey"), ks.serialize());
+          self.set("web3", new Web3(self.getProvider(ks, hostname)));
           resolve();
         });
       });
     });
+  },
+
+  delete: function() {
+    localStorage.removeItem(this.get("storageKey"));
   },
 
   getProvider: function(keystore, host) {

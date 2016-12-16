@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
   listen: function () {
 
     let self = this;
-    let web3 = this.get('web3.web3Instance');
+    let web3 = this.get('web3').instance();
 
     if (!this.get('requestFilter')) {
       let localIdentityRequests = JSON.parse(localStorage.getItem('identityRequests'));
