@@ -18,7 +18,7 @@
   },
   "author": "",
   "license": "MIT",
-  "devDependencies": {    
+  "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^2.4.1",
     "ember-bootstrap": "0.11.2",
@@ -42,7 +42,8 @@
     "ember-resolver": "2.1.0",
     "ember-simple-auth": "1.1.0",
     "install": "^0.8.2",
-    "loader.js": "^4.0.10",
-    "npm": "^4.0.3"
+    "npm": "^4.0.3",
+    "ember-truth-helpers": "1.2.0",
+    "loader.js": "^4.0.10"
   }
 }
