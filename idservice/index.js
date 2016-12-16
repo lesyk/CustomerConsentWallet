@@ -72,16 +72,17 @@ var lookup = web3.shh.filter({
         console.log("Failed to read Whisper message", err);
     } else {
         var whisperId;
+        var email;
 
         try {
             var lookupRequest = JSON.parse(web3.toAscii(result.payload));
-            var email = lookupRequest.email;
+            email = lookupRequest.email;
             whisperId = ids.get(email);
         } catch (err) {
             console.log("Failed to interpret Whisper message payload", web3.toAscii(result.payload), err);
         }
 
-        if (whisperId) {
+        if (whisperId && email) {
             whisper.send(identity, result.from, "identity-service-lookup", {
                 "email": email,
                 "id": whisperId
