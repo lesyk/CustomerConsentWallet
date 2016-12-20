@@ -13,6 +13,7 @@ Router.map(function() {
   this.route('whisper');
   this.route('identityrequests');
   this.route('log');
+  this.route('transaction', { path: ':id' });
 });
 
 export default Router;
