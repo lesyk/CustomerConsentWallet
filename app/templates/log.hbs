@@ -1,20 +1,29 @@
 {{outlet}}
 
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-8">
     <h2>Transaction log</h2>
-    <h3>There are {{count}} transactions</h3>
-    {{#each log as |item|}}
-      <dl>
-        <dt>Block number</dt>
-        <dd>{{item.blockNumber}}</dd>
-        <dt>Transaction address</dt>
-        <dd>{{item.address}}</dd>
-        <dt>Transaction hash</dt>
-        <dd>{{item.transactionHash}}</dd>
-        <dt>Data</dt>
-        <dd>{{item.data}}</dd>
-      </dl>
-    {{/each}}
+    <h3>There are {{totalCount}} transactions</h3>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Hash</th>
+          <th>Block</th>
+          <th>Transaction address</th>
+          <th>Transaction hash</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each log as |item|}}
+          <tr>
+            <th scope="row">{{#link-to 'transaction' item.transactionHash}}{{item.transactionHash}}{{/link-to}}</th>
+            <td>{{#link-to 'transaction' item.transactionHash}}{{item.blockNumber}}{{/link-to}}</td>
+            <td>{{#link-to 'transaction' item.transactionHash}}{{item.address}}{{/link-to}}</td>
+            <td>{{#link-to 'transaction' item.transactionHash}}{{item.transactionHash}}{{/link-to}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
   </div>
 </div>
