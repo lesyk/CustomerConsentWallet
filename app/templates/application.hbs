@@ -1,16 +1,15 @@
 <div class="container-fluid">
-
 	<div class="page-header">
-		<h1><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Customer consent wallet</h1>
+		<h1><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>Customer consent wallet</h1>
 	</div>
 
 	<div id="navbar" class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
 			{{#if session.isAuthenticated}}
-				<li>{{#link-to 'mywallet'}}Wallet{{/link-to}}</li>
-				<li>{{#link-to 'log'}}Transaction log{{/link-to}}</li>
-				<li>{{#link-to 'whisper'}}Whisper{{/link-to}}</li>
-				<li>{{#link-to 'identityrequests'}}Identity requests{{/link-to}}</li>
+				{{#active-link}}{{#link-to 'mywallet'}}Wallet{{/link-to}}{{/active-link}}
+				{{#active-link}}{{#link-to 'log'}}Transaction log{{/link-to}}{{/active-link}}
+				{{#active-link}}{{#link-to 'whisper'}}Whisper{{/link-to}}{{/active-link}}
+				{{#active-link}}{{#link-to 'identityrequests'}}Identity requests{{/link-to}}{{/active-link}}
     		<li><a {{ action 'invalidateSession' }}>Logout</a></li>
   		{{/if}}
 		</ul>
