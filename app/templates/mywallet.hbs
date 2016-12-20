@@ -2,7 +2,10 @@
 <div class="row">
   <div class="col-md-4">
     <h2>MyWallet</h2>
-    <p>Your balance is {{balance}}</p>
+    <p>Your balances are:</p>
+    {{#each addressesAndBalances as |addressAndBalance|}}
+      {{addressAndBalance.address}}: {{addressAndBalance.balance}}<br />
+    {{/each}}
 
     <h3>Addresses</h3>
     <ul>
@@ -21,6 +24,6 @@
       {{#each consents as |consent|}}
         <li>{{consent}}</li>
       {{/each}}
-    </ul>    
+    </ul>
   </div>
 </div>
