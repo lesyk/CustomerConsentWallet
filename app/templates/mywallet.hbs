@@ -1,29 +1,53 @@
-{{outlet}}
+<div class="page-header">
+  <h1>MyWallet</h1>
+</div>
+
 <div class="row">
-  <div class="col-md-4">
-    <h2>MyWallet</h2>
-    <p>Your balances are:</p>
-    {{#each addressesAndBalances as |addressAndBalance|}}
-      {{addressAndBalance.address}}: {{addressAndBalance.balance}}<br />
-    {{/each}}
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Your balances are:</h3>
+      </div>
+      <div class="panel-body">
+        {{#each addressesAndBalances as |addressAndBalance|}}
+          {{addressAndBalance.address}}: {{addressAndBalance.balance}}<br />
+        {{/each}}
+      </div>
+    </div>
 
-    <h3>Addresses</h3>
-    <ul>
-    {{#each addresses as |address|}}
-      <li>{{address}}</li>
-    {{/each}}
-    </ul>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Addresses</h3>
+      </div>
 
-    <button {{action "sendGreeting"}} class="btn btn-success btn-xs">
-      Send greeting
-    </button>
+      <div class="panel-body">
+        <ul>
+          {{#each addresses as |address|}}
+            <li>{{address}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <button {{action "sendGreeting"}} class="btn btn-success btn-xs">Send greeting</button>
     <p>{{greeting}}</p>
 
-    <h3>Consent requests</h3>
-    <ul>
-      {{#each consents as |consent|}}
-        <li>{{consent}}</li>
-      {{/each}}
-    </ul>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Consent requests</h3>
+      </div>
+
+      <div class="panel-body">
+        <ul>
+          {{#each consents as |consent|}}
+            <li>{{consent}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
   </div>
 </div>

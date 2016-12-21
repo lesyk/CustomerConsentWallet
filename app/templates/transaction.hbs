@@ -1,18 +1,31 @@
+<div class="page-header">
+  <h1>Transaction</h1>
+</div>
+
+
 <div class="row">
-  <div class="col-md-4">
-    <ul>
-      <li>hash: {{model.transaction.hash}}</li>
-      <li>nonce: {{model.transaction.nonce}}</li>
-      <li>blockHash: {{model.transaction.blockHash}}</li>
-      <li>blockNumber: {{model.transaction.blockNumber}}</li>
-      <li>transactionIndex: {{model.transaction.transactionIndex}}</li>
-      <li>from: {{model.transaction.from}}</li>
-      <li>to: {{model.transaction.to}}</li>
-      <li>value: {{model.transaction.value}}</li>
-      <li>gas: {{model.transaction.gas}}</li>
-      <li>gasPrice: {{model.transaction.gasPrice}}</li>
-      <li>input: {{model.transaction.input}}</li>
-    </ul>    
+  <div class="col-md-12">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Hash: {{model.transaction.hash}}</h3>
+      </div>
+
+      <div class="panel-body">
+        <ul>
+          <li>nonce: {{model.transaction.nonce}}</li>
+          <li>blockHash: {{model.transaction.blockHash}}</li>
+          <li>blockNumber: {{model.transaction.blockNumber}}</li>
+          <li>transactionIndex: {{model.transaction.transactionIndex}}</li>
+          <li>from: {{model.transaction.from}}</li>
+          <li>to: {{model.transaction.to}}</li>
+          <li>value: {{model.transaction.value}}</li>
+          <li>gas: {{model.transaction.gas}}</li>
+          <li>gasPrice: {{model.transaction.gasPrice}}</li>
+          <li>input: {{model.transaction.input}}</li>
+        </ul>
+      </div>
+    </div>
     {{#link-to 'log'}}Back{{/link-to}}
   </div>
 </div>
