@@ -1,15 +1,17 @@
-{{outlet}}
+<div class="page-header">
+  <h1>Login</h1>
+</div>
 
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-12">
     {{#if errorMessage}}
       <div class="alert alert-danger">{{errorMessage}}</div>
     {{/if}}
     {{#if seedGenerated}}
       <div class="alert alert-info">
-        <p>Your new wallet seed is:</p>         
-        <p style="padding-left:15px;"><bold><em>{{seed}}</em></bold></p>
-        <p>Please write it down on paper or in a password manager, you will need it to access your wallet. Do not let anyone see this seed or they can take your Ether.</p>
+        <div>Your new wallet seed is:</div>
+        <div style="padding-left:15px;"><bold><em>{{seed}}</em></bold></div>
+        <div>Please write it down on paper or in a password manager, you will need it to access your wallet. Do not let anyone see this seed or they can take your Ether.</div>
       </div>
     {{/if}}
   </div>
@@ -23,7 +25,7 @@
         {{input value=seed type="text" id="seed" class="form-control" placeholder="Seed phrase" required="" autofocus=""}}
         <span class="input-group-btn"><button {{action "generateSeed"}} class="btn btn-primary">Generate seed phrase</button></span>
       </div>
-      <p class="small">Enter seed phrase or generate one to create a new wallet</p>
+      <div><small>Enter seed phrase or generate one to create a new wallet</small></div>
     </div>
   </div>
 </div>
