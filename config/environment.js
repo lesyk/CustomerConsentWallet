@@ -18,7 +18,6 @@ module.exports = function(environment) {
     },
 
     APP: {
-      web3URL: 'http://localhost:8545'
       // Here you can pass flags/options to your application instance
       // when it is created
     }
@@ -36,6 +35,7 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.APP.web3URL = 'http://localhost:8545';
   }
 
   if (environment === 'test') {
@@ -50,7 +50,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.APP.web3URL = 'http://35.156.138.143:8545';
   }
 
   return ENV;
