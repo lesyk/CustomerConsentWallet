@@ -1,18 +1,19 @@
 import Ember from 'ember';
 const { Service, RSVP: { Promise }, Error } = Ember;
+import ENV from 'customer-consent-wallet/config/environment';
 
 export default Service.extend({
   web3: null,
   storageKey: "wallet",
+  hostname: ENV.APP.web3URL,
 
   instance: function(host) {
 
-    let hostname = host || "http://localhost:8545";
     if(this.get('web3') === null) {
       let storage = localStorage.getItem(this.get("storageKey"));
       if(storage !== null) {
         let keystore = new lightwallet.keystore.deserialize(storage);
-        this.set("web3", new Web3(this.getProvider(keystore, hostname)));
+        this.set("web3", new Web3(this.getProvider(keystore, this.get('hostname'))));
       } else {
         console.log("wallet not set in local storage");
         return null;
@@ -22,7 +23,6 @@ export default Service.extend({
   },
 
   create: function(seedPhrase, password, host) {
-    let hostname = host || "http://localhost:8545";
 
     let self = this;
     return new Promise(function(resolve, reject) {
@@ -44,7 +44,7 @@ export default Service.extend({
           };
 
           localStorage.setItem(self.get("storageKey"), ks.serialize());
-          self.set("web3", new Web3(self.getProvider(ks, hostname)));
+          self.set("web3", new Web3(self.getProvider(ks, self.get('hostname'))));
           resolve();
         });
       });
