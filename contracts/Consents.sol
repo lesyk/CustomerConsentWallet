@@ -1,9 +1,7 @@
-pragma solidity ^0.4.1;
+pragma solidity ^0.4.6;
 
 contract Consents
 {
-    address data_requester;
-
     mapping (address => Consent[]) public consents;
 
     enum State {Requested, Given, Revoked, Rejected}
@@ -28,24 +26,24 @@ contract Consents
         ConsentRequested(customer, data_owner, msg.sender, id);
     }
 
-    function giveConsent(address customer, address data_owner, string id) returns (bool) {
-        if(changeConsent(customer, data_owner, id, State.Given)) {
-            ConsentGiven(customer, data_owner, msg.sender, id);
+    function giveConsent(address data_requester, address data_owner, string id) returns (bool) {
+        if(changeConsent(msg.sender, data_owner, data_requester, id, State.Given)) {
+            ConsentGiven(msg.sender, data_owner, data_requester, id);
             return true;
         }
         return false;
     }
 
-    function revokeConsent(address customer, address data_owner, string id) returns (bool) {
-        if(changeConsent(customer, data_owner, id, State.Revoked)) {
-            ConsentRevoked(customer, data_owner, msg.sender, id);
+    function revokeConsent(address data_requester, address data_owner, string id) returns (bool) {
+        if(changeConsent(msg.sender, data_owner, data_requester, id, State.Revoked)) {
+            ConsentRevoked(msg.sender, data_owner, data_requester, id);
             return true;
         }
         return false;
     }
 
-    function changeConsent(address customer, address data_owner, string id, State newState) private returns (bool) {
-        Consent[] cns = consents[msg.sender];
+    function changeConsent(address customer, address data_owner, address data_requester, string id, State newState) private returns (bool) {
+        Consent[] cns = consents[data_requester];
 
         for (uint i; i < cns.length; i++) {
             Consent consent = cns[i];
