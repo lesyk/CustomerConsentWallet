@@ -33,8 +33,6 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <button {{action "sendGreeting"}} class="btn btn-success btn-xs">Send greeting</button>
-    <p>{{greeting}}</p>
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -42,9 +40,20 @@
       </div>
 
       <div class="panel-body">
-        <ul>
-          {{#each consents as |consent|}}
-            <li>{{consent}}</li>
+
+        {{#if eventError}}
+          <div class="alert alert-danger">{{eventError}}</div>
+        {{/if}}
+
+        <ul class="list-group">
+          {{#each contractEvents as |event|}}
+          <li class="list-group-item">
+            From: {{event.args.data_requester}}, id: {{event.args.id}}
+            <span class="pull-right">
+              <button type="button" class="btn btn-sm btn-success" {{action 'accept' event}}>Accept</button>
+              <button type="button" class="btn btn-sm btn-warning" {{action 'reject' event}}>Reject</button>
+            </span>
+          </li>
           {{/each}}
         </ul>
       </div>

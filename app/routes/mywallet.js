@@ -3,13 +3,12 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   web3: Ember.inject.service(),
+  contractService: Ember.inject.service('consent-contract'),
+  contract: null,
+  contractEvents: [],
 
   setupController: function(controller, model) {
     let web3 = this.get("web3").instance();
-
-    let abi = [ { "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "greeting", "type": "string" } ], "name": "greet", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "kill", "outputs": [], "payable": false, "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "to", "type": "address" }, { "indexed": false, "name": "owner", "type": "address" }, { "indexed": false, "name": "greeting", "type": "string" } ], "name": "SendGreeting", "type": "event" } ];
-    let greeter = web3.eth.contract(abi).at('0xc526dA5A61934DA5f9967865a0a126c4cBc5d11D');
-    controller.set("greeter", greeter);
 
     let addresses = web3.currentProvider.transaction_signer.getAddresses();
     controller.set("addresses", addresses);
@@ -20,32 +19,48 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       let balance = web3.eth.getBalance(addresses[i]).toString(10);
       addressesAndBalances.push({'address': addresses[i], 'balance': balance});
     }
+
     controller.set('addressesAndBalances', addressesAndBalances);
+
+    this.set("contract", this.get("contractService").getConsentContract());
+    this.fetchContractEvents(this.get("contract"), "0x" + addresses[0]);
+  },
+
+  fetchContractEvents: function(contract, customer_address) {
+
+    // TODO filter out consent requests that has already been accepted or rejected
+    var contractEvents = contract.ConsentRequested({}, {fromBlock: 0, toBlock: 'latest'});
+    contractEvents.watch( (error, event) => {
+      if (!error) {
+        console.log(event);
+        if(event.args.customer == customer_address) {
+          this.get("contractEvents").push(event);
+          this.get('controller').set("contractEvents", this.get("contractEvents"));
+        }
+      } else {
+        console.log(error);
+      }
+    });
   },
 
   actions: {
-    sendGreeting: function() {
-      console.log("greeting");
+    accept: function(event) {
+      let contract = this.get("contract");
+      let controller = this.get("controller");
       let gasPrice = 50000000000;
       let gas = 500000;
-
-      // assumes this contract has been deployed to the blockchain
-      this.controller.get('greeter').greet('0xcB9adacAbFa374366377d0D843C7B368500DDbF4', "hey you", {gasPrice: gasPrice, gas: gas}, function(err, txhash) {
-        console.log('error: ' + err);
-        console.log('txhash: ' + txhash);
+      contract.giveConsent(event.args.data_requester, event.args.data_owner, event.args.id, {gas: gas, gasPrice: gasPrice}, function(error, result) {
+        if(error !== null) {
+          console.log(error);
+          controller.set("eventError", "Request could not be completed");
+        } else {
+          console.log(result);
+          // TODO show confirmations?
+        }
       });
-      return false;
+    },
+    reject: function(id) {
+      console.log("reject");
     }
-  },
-
-  sendEth: function(fromAddr, toAddr, valueEth) {
-    console.log("send ether");
-    let value = parseFloat(valueEth)*1.0e18;
-    let gasPrice = 50000000000;
-    let gas = 50000;
-    this.get("web3").instance().eth.sendTransaction({from: fromAddr, to: toAddr, value: value, gasPrice: gasPrice, gas: gas}, function (err, txhash) {
-      console.log('error: ' + err);
-      console.log('txhash: ' + txhash);
-    });
   }
 });
