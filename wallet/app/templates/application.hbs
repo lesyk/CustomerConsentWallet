@@ -7,15 +7,22 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      {{#link-to 'mywallet' class="navbar-brand"}}Customer consent wallet{{/link-to}}      
+      {{#link-to 'consents' class="navbar-brand"}}Customer consent wallet{{/link-to}}
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				{{#if session.isAuthenticated}}
-					{{#active-link}}{{#link-to 'mywallet'}}Wallet{{/link-to}}{{/active-link}}
-					{{#active-link}}{{#link-to 'log'}}Transaction log{{/link-to}}{{/active-link}}
-					{{#active-link}}{{#link-to 'whisper'}}Whisper{{/link-to}}{{/active-link}}
-					{{#active-link}}{{#link-to 'identityrequests'}}Identity requests{{/link-to}}{{/active-link}}
+          {{#active-link}}{{#link-to 'consents'}}Consents{{/link-to}}{{/active-link}}
+          {{#bs-dropdown tagName="li"}}
+            {{#bs-dropdown-toggle}}Advanced<span class="caret"></span>{{/bs-dropdown-toggle}}
+            {{#bs-dropdown-menu}}
+              <li>{{#link-to 'mywallet'}}Wallet{{/link-to}}</li>
+              <li>{{#link-to 'log'}}Transaction log{{/link-to}}</li>
+              <li>{{#link-to 'whisper'}}Whisper{{/link-to}}</li>
+              <li>{{#link-to 'identityrequests'}}Identity requests{{/link-to}}</li>
+            {{/bs-dropdown-menu}}
+            {{/bs-dropdown}}
 	    		<li><a {{ action 'invalidateSession' }}>Logout</a></li>
 	  		{{/if}}
 			</ul>

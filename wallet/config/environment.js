@@ -25,8 +25,8 @@ module.exports = function(environment) {
 
   ENV['ember-simple-auth'] = {
     authenticationRoute:         'login',
-    routeAfterAuthentication:    'mywallet',
-    routeIfAlreadyAuthenticated: 'mywallet'
+    routeAfterAuthentication:    'consents',
+    routeIfAlreadyAuthenticated: 'consents'
   };
 
   if (environment === 'development') {
