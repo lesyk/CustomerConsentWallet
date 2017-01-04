@@ -1,14 +1,10 @@
 FROM node:alpine
 
-ADD package.json /dataowner/
-ADD *.js /dataowner/
+ADD package.json /opt/consent/dataowner/
+ADD *.js /opt/consent/dataowner/
+ADD node_modules /opt/consent/dataowner/node_modules
 
-RUN \
-  apk add --update git && \
-  cd /dataowner && \
-  npm install && \
-  apk del git
+WORKDIR /opt/consent/dataowner
 
-WORKDIR /dataowner
 ENTRYPOINT ["node"]
 CMD ["index.js", "goliath-national-bank@example.com"]

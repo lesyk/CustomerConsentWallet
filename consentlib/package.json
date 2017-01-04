@@ -1,12 +1,11 @@
 {
-  "name": "idservice",
+  "name": "consentlib",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "consentlib": "file:../consentlib",
     "web3": "^0.16.0"
   }
 }
