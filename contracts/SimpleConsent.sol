@@ -1,7 +1,6 @@
 pragma solidity ^0.4.2;
 
-contract SimpleConsent
-{
+contract SimpleConsent {
     string id;
     address customer;
     address data_requester;

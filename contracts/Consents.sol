@@ -1,13 +1,11 @@
 pragma solidity ^0.4.6;
 
-contract Consents
-{
+contract Consents {
     mapping (address => Consent[]) public consents;
 
     enum State {Requested, Given, Revoked, Rejected}
 
-    struct Consent
-    {
+    struct Consent {
         address customer;
         address data_owner;
         string id;
@@ -42,7 +40,14 @@ contract Consents
         return false;
     }
 
-    function changeConsent(address customer, address data_owner, address data_requester, string id, State newState) private returns (bool) {
+    function changeConsent(address customer,
+      address data_owner,
+      address data_requester,
+      string id,
+      State newState)
+      private
+      returns (bool)
+    {
         Consent[] cns = consents[data_requester];
 
         for (uint i; i < cns.length; i++) {

@@ -1,12 +1,13 @@
-contract mortal {
+pragma solidity ^0.4.6;
+
+contract Mortal {
     address owner;
 
-    function mortal() { owner = msg.sender; }
-
+    function Mortal() { owner = msg.sender; }
     function kill() { if (msg.sender == owner) selfdestruct(owner); }
 }
 
-contract greeter is mortal {
+contract Greeter is Mortal {
     string greeting;
 
     event SendGreeting(address to, address owner, string greeting);
