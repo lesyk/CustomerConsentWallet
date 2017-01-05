@@ -7,4 +7,4 @@ ADD node_modules /opt/consent/dataowner/node_modules
 WORKDIR /opt/consent/dataowner
 
 ENTRYPOINT ["node"]
-CMD ["index.js", "goliath-national-bank@example.com"]
+CMD ["index.js", "goliath-national-bank@example.com", "SecretPassword1"]
