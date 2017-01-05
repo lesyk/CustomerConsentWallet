@@ -110,7 +110,9 @@ class ConsentFlow {
     }
 
     newEthAddress(passphrase) {
-        return this.web3.personal.newAccount(passphrase);
+        let address = this.web3.personal.newAccount(passphrase);
+        console.log("Created new address", address);
+        return address;
     }
 
     newContract(address, source, contractName) {
