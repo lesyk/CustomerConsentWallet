@@ -23,9 +23,11 @@ let account = web3.personal.unlockAccount(web3.eth.accounts[0], 'password');
 let source = fs.readFileSync('./../contracts/PayingBackContract.sol', 'utf8');
 let compiledContract = solc.compile(source, 1);
 let abi = compiledContract.contracts['PayingBackContract'].interface;
-console.log('Abi', abi);
+console.log('Abi: ', abi);
+let bytecode = compiledContract.contracts['PayingBackContract'].bytecode;
+let gasEstimate = web3.eth.estimateGas({data: bytecode});
 let contract = web3.eth.contract(JSON.parse(abi));
-let faucetInstanceTransaction = contract.new({from:web3.eth.accounts[0], data:compiledContract.contracts['PayingBackContract'].bytecode, value:30000000000000000000, gas:1000000}, function(err, myContract){
+contract.new({from:web3.eth.accounts[0], data:bytecode, value:30000000000000000000, gas:gasEstimate}, function(err, myContract){
   if(!err) {
      if(!myContract.address) {
          console.log("Hash: ", myContract.transactionHash);
