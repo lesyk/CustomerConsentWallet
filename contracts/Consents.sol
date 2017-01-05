@@ -1,30 +1,39 @@
 pragma solidity ^0.4.6;
 
 contract Consents {
-    mapping (address => Consent[]) public consents;
+    // mappings between id/customer addresses and consent array indexes, public accessible on key
+    mapping (bytes16 => uint) public id_mapping;
+    mapping (address => uint[]) public customer_mapping;
+
+    // array of all consents, public accessible on index
+    Consent[] public consents;
 
     enum State {Requested, Given, Revoked, Rejected}
 
     struct Consent {
+        bytes16 id; // id is assumed to be a UUID
+        address data_requester;
         address customer;
         address data_owner;
-        string id;
         State state;
     }
 
-    event ConsentGiven (address customer, address data_owner, address data_requester, string id);
-    event ConsentRevoked (address customer, address data_owner, address data_requester, string id);
-    event ConsentRequested (address customer, address data_owner, address data_requester, string id);
+    event ConsentGiven (address customer, address data_owner, address data_requester, bytes16 id);
+    event ConsentRevoked (address customer, address data_owner, address data_requester, bytes16 id);
+    event ConsentRequested (address customer, address data_owner, address data_requester, bytes16 id);
 
-    function Consents() {
-    }
+    function Consents() {}
 
-    function requestConsent(address customer, address data_owner, string id) {
-        consents[msg.sender].push(Consent(customer, data_owner, id, State.Requested));
+    function requestConsent(address customer, address data_owner, bytes16 id) {
+        var c = Consent(id, msg.sender, customer, data_owner, State.Requested);
+        uint length = consents.push(c);
+        uint index = length - 1;
+        id_mapping[id] = index;
+        customer_mapping[customer].push(index);
         ConsentRequested(customer, data_owner, msg.sender, id);
     }
 
-    function giveConsent(address data_requester, address data_owner, string id) returns (bool) {
+    function giveConsent(address data_requester, address data_owner, bytes16 id) returns (bool) {
         if(changeConsent(msg.sender, data_owner, data_requester, id, State.Given)) {
             ConsentGiven(msg.sender, data_owner, data_requester, id);
             return true;
@@ -32,7 +41,7 @@ contract Consents {
         return false;
     }
 
-    function revokeConsent(address data_requester, address data_owner, string id) returns (bool) {
+    function revokeConsent(address data_requester, address data_owner, bytes16 id) returns (bool) {
         if(changeConsent(msg.sender, data_owner, data_requester, id, State.Revoked)) {
             ConsentRevoked(msg.sender, data_owner, data_requester, id);
             return true;
@@ -40,39 +49,23 @@ contract Consents {
         return false;
     }
 
-    function changeConsent(address customer,
-      address data_owner,
-      address data_requester,
-      string id,
-      State newState)
-      private
-      returns (bool)
-    {
-        Consent[] cns = consents[data_requester];
-
-        for (uint i; i < cns.length; i++) {
-            Consent consent = cns[i];
-            if (consent.customer == customer
-                && consent.data_owner == data_owner
-                && stringsEqual(consent.id, id)
-                && consent.state != newState) {
-                    consent.state = newState;
-                    return true;
-                }
-        }
-
-        return false;
+    function customerConsents(address customer) constant returns (uint) {
+        return customer_mapping[customer].length;
     }
 
-    function stringsEqual(string storage _a, string memory _b) internal returns (bool) {
-        bytes storage a = bytes(_a);
-        bytes memory b = bytes(_b);
-        if (a.length != b.length)
-            return false;
-        // @todo unroll this loop
-        for (uint i = 0; i < a.length; i ++)
-            if (a[i] != b[i])
-                return false;
-        return true;
+    function changeConsent(address customer, address data_owner, address data_requester, bytes16 id, State newState) private returns (bool) {
+        var index = id_mapping[id];
+
+        Consent consent = consents[index];
+
+        if (consent.customer == customer
+            && consent.data_owner == data_owner
+            && consent.data_requester == data_requester
+            && consent.state != newState) {
+                consent.state = newState;
+                return true;
+            }
+
+        return false;
     }
 }
