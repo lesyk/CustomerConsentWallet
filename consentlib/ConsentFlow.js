@@ -115,13 +115,15 @@ class ConsentFlow {
 
     newContract(address, source, contractName) {
 
+        console.log("Deploying contract", contractName);
+
         let compiledContract = this.solc.compile(source, 1);
         let abi = compiledContract.contracts[contractName].interface;
 
         console.log('Abi', abi);
 
         let contract = this.web3.eth.contract(JSON.parse(abi));
-        let bytecode = compiledContract.contracts['PayingBackContract'].bytecode;
+        let bytecode = compiledContract.contracts[contractName].bytecode;
         let gasEstimate = this.web3.eth.estimateGas({data: bytecode});
 
         let newContract = contract.new({
