@@ -24,13 +24,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     let consentResultCallback = (error, result) => {
         if(!error) {
-          // TODO result should be decoded
+          console.log(result);
           let consent = Consent.create({
-            id: result[0].toString(10),
-            requester: result[1],
-            customer: result[2],
-            owner: result[3],
-            state: result[4].toString(10)
+            requester: result[0],
+            customer: result[1],
+            owner: result[2],
+            state: result[3].toString(10),
+            id: result[4]
           });
           this.get("consents").push(consent);
           this.get("controller").set("consents", this.get("consents"));
@@ -43,7 +43,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         if(!error) {
           let length = result.toString(10);
           for(var i = 0; i < length; i++) {
-              contract.consents(i, consentResultCallback);
+              contract.getConsent(i, consentResultCallback);
           }
         } else {
           console.log(error);

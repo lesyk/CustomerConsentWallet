@@ -1,11 +1,13 @@
 pragma solidity ^0.4.6;
 
 contract Consents {
+    address owner;
+
     // mappings between id/customer addresses and consent array indexes, public accessible on key
     mapping (bytes16 => uint) public id_mapping;
     mapping (address => uint[]) public customer_mapping;
 
-    // array of all consents, public accessible on index
+    // array of all consents, public accesible on index
     Consent[] public consents;
 
     enum State {Requested, Given, Revoked, Rejected}
@@ -22,7 +24,9 @@ contract Consents {
     event ConsentRevoked (address customer, address data_owner, address data_requester, bytes16 id);
     event ConsentRequested (address customer, address data_owner, address data_requester, bytes16 id);
 
-    function Consents() {}
+    function Consents() {
+        owner = msg.sender;
+    }
 
     function requestConsent(address customer, address data_owner, bytes16 id) {
         var c = Consent(id, msg.sender, customer, data_owner, State.Requested);
@@ -49,6 +53,10 @@ contract Consents {
         return false;
     }
 
+    function getConsent(uint index) constant returns (address, address, address, State, bytes16) {
+        return (consents[index].data_requester, consents[index].customer, consents[index].data_owner, consents[index].state, consents[index].id);
+    }
+
     function customerConsents(address customer) constant returns (uint) {
         return customer_mapping[customer].length;
     }
@@ -67,5 +75,11 @@ contract Consents {
             }
 
         return false;
+    }
+
+    function kill() {
+        if (msg.sender == owner) {
+            selfdestruct(owner);
+        }
     }
 }
