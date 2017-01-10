@@ -434,6 +434,10 @@ better-assert@~1.0.0:
   dependencies:
     callsite "1.0.0"
 
+"bignumber.js@git+https://github.com/debris/bignumber.js.git#master":
+  version "2.0.7"
+  resolved "git+https://github.com/debris/bignumber.js.git#94d7146671b9719e00a09c29b01a691bc85048c2"
+
 "binaryextensions@1 || 2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/binaryextensions/-/binaryextensions-2.0.0.tgz#e597d1a7a6a3558a2d1c7241a16c99965e6aa40f"
@@ -1311,6 +1315,11 @@ configstore@^2.0.0:
     write-file-atomic "^1.1.2"
     xdg-basedir "^2.0.0"
 
+"consentlib@file:../consentlib":
+  version "0.1.0"
+  dependencies:
+    web3 "^0.16.0"
+
 console-browserify@^1.1.0, console-browserify@1.1.x:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-browserify/-/console-browserify-1.1.0.tgz#f0241c45730a9fc6323b206dbf38edc741d0bb10"
@@ -1427,6 +1436,10 @@ crypto-browserify@^3.0.0:
     pbkdf2 "^3.0.3"
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
+
+crypto-js@^3.1.4:
+  version "3.1.8"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.8.tgz#715f070bf6014f2ae992a98b3929258b713f08d5"
 
 d@^0.1.1, d@~0.1.1:
   version "0.1.1"
@@ -3626,7 +3639,7 @@ lodash.assign@^3.2.0:
     lodash._createassigner "^3.0.0"
     lodash.keys "^3.0.0"
 
-lodash.assign@^4.2.0:
+lodash.assign@^4.0.3, lodash.assign@^4.0.6, lodash.assign@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
 
@@ -3883,6 +3896,10 @@ memory-streams@^0.1.0:
   resolved "https://registry.yarnpkg.com/memory-streams/-/memory-streams-0.1.0.tgz#bec658a71e3f28b0f0c2f1b14501c2db547d5f7a"
   dependencies:
     readable-stream "~1.0.2"
+
+memorystream@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/memorystream/-/memorystream-0.3.1.tgz#86d7090b30ce455d63fbae12dda51a47ddcaf9b2"
 
 merge-descriptors@1.0.1:
   version "1.0.1"
@@ -5163,6 +5180,10 @@ require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
 
+require-from-string@^1.1.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/require-from-string/-/require-from-string-1.2.1.tgz#529c9ccef27380adfec9a2f965b649bbee636418"
+
 require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
@@ -5462,6 +5483,16 @@ socket.io@1.5.0:
     socket.io-adapter "0.4.0"
     socket.io-client "1.5.0"
     socket.io-parser "2.2.6"
+
+solc@0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/solc/-/solc-0.4.7.tgz#dad134a3d38bee810db1623575c0535e530e0fb8"
+  dependencies:
+    fs-extra "^0.30.0"
+    memorystream "^0.3.1"
+    require-from-string "^1.1.0"
+    semver "^5.3.0"
+    yargs "^4.7.1"
 
 sorted-object@~2.0.0, sorted-object@~2.0.1:
   version "2.0.1"
@@ -5971,6 +6002,10 @@ user-home@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/user-home/-/user-home-1.1.1.tgz#2b5be23a32b63a7c9deb8d0f28d485724a3df190"
 
+utf8@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
+
 util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -6059,6 +6094,15 @@ wcwidth@^1.0.0:
   resolved "https://registry.yarnpkg.com/wcwidth/-/wcwidth-1.0.1.tgz#f0b0dcf915bc5ff1528afadb2c0e17b532da2fe8"
   dependencies:
     defaults "^1.0.3"
+
+web3@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/web3/-/web3-0.16.0.tgz#a4554175cd462943035b1f1d39432f741c6b6019"
+  dependencies:
+    bignumber.js "git+https://github.com/debris/bignumber.js#master"
+    crypto-js "^3.1.4"
+    utf8 "^2.1.1"
+    xmlhttprequest "*"
 
 websocket-driver@>=0.5.1:
   version "0.6.5"
@@ -6158,6 +6202,10 @@ xmlhttprequest-ssl@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.1.tgz#3b7741fea4a86675976e908d296d4445961faa67"
 
+xmlhttprequest@*:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
+
 xtend@^4.0.0, xtend@~4.0.1, xtend@4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
@@ -6177,11 +6225,37 @@ yam@0.0.22:
     fs-extra "^0.30.0"
     lodash.merge "^4.4.0"
 
+yargs-parser@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-2.4.1.tgz#85568de3cf150ff49fa51825f03a8c880ddcc5c4"
+  dependencies:
+    camelcase "^3.0.0"
+    lodash.assign "^4.0.6"
+
 yargs-parser@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-4.2.0.tgz#6ced869cd05a3dca6a1eaee38b68aeed4b0b4101"
   dependencies:
     camelcase "^3.0.0"
+
+yargs@^4.7.1:
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-4.8.1.tgz#c0c42924ca4aaa6b0e6da1739dfb216439f9ddc0"
+  dependencies:
+    cliui "^3.2.0"
+    decamelize "^1.1.1"
+    get-caller-file "^1.0.1"
+    lodash.assign "^4.0.3"
+    os-locale "^1.4.0"
+    read-pkg-up "^1.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^1.0.1"
+    which-module "^1.0.0"
+    window-size "^0.2.0"
+    y18n "^3.2.1"
+    yargs-parser "^2.4.1"
 
 yargs@^6.5.0:
   version "6.5.0"
