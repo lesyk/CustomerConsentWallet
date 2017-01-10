@@ -1,12 +1,12 @@
-import Ember from 'ember';
-import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
+import Ember from "ember";
+import UnauthenticatedRouteMixin from "ember-simple-auth/mixins/unauthenticated-route-mixin";
 
 export default Ember.Route.extend(UnauthenticatedRouteMixin, {
   session: Ember.inject.service('session'),
 
   actions: {
     login: function() {
-      let credentials = this.controller.getProperties('seed', 'password');
+      let credentials = this.controller.getProperties('seed', 'email', 'password');
       // TODO test that it's a valid seed phrase
       if(credentials.seed === "") {
           this.controller.set("errorMessage", "Seed must be set");

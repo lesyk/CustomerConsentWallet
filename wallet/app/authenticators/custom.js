@@ -1,5 +1,5 @@
-import Ember from 'ember';
-import Base from 'ember-simple-auth/authenticators/base';
+import Ember from "ember";
+import Base from "ember-simple-auth/authenticators/base";
 
 export default Base.extend({
   web3: Ember.inject.service("web3"),
@@ -17,6 +17,7 @@ export default Base.extend({
   },
 
   authenticate(credentials) {
+    this.get('session').set('data.email', credentials.email);
     return this.get("web3").create(credentials.seed, credentials.password);
   },
 

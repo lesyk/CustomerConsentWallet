@@ -24,6 +24,7 @@
   "devDependencies": {
     "bower": "^1.8.0",
     "broccoli-asset-rev": "^2.4.5",
+    "consentlib": "file:../consentlib",
     "ember-ajax": "^2.4.1",
     "ember-async-button": "1.0.2",
     "ember-bootstrap": "0.11.2",

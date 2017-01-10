@@ -1,11 +1,12 @@
-import Ember from 'ember';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import Consent from '../models/consent';
-import ethJSABI from "npm:ethereumjs-abi";
+import Ember from "ember";
+import AuthenticatedRouteMixin from "ember-simple-auth/mixins/authenticated-route-mixin";
+import Consent from "../models/consent";
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   web3: Ember.inject.service(),
+  consentLib: Ember.inject.service("consentlib"),
   contractService: Ember.inject.service('consent-contract'),
+  session: Ember.inject.service('session'),
 
   beforeModel: function() {
     let web3 = this.get("web3").instance();
@@ -46,6 +47,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         }
       });
     });
+  },
+
+  setupController: function (controller, model) {
+    let web3 = this.get("web3").instance();
+    let consentLib = this.get("consentLib").initialize(web3);
+    let email = this.get("session").get("data.email");
+    let addresses = web3.currentProvider.transaction_signer.getAddresses();
+    
+    consentLib.registerWithIdService(email);
+    consentLib.respondEthAddress(addresses[0]);
+    controller.set("email", email);
+
+    controller.set('model', model);
   },
 
   actions: {
