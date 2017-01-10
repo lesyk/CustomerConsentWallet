@@ -16,34 +16,9 @@
           <div class="alert alert-danger">{{eventError}}</div>
         {{/if}}
 
-        <ul class="list-group">
-          {{#each consents as |consent|}}
-          <li class="list-group-item">
-            <table class="table table-striped">
-              <tr>
-                <td>
-                  <dl class="dl-horizontal">
-                    <dt>ID</dt>
-                    <dd>{{consent.id}}</dd>
-                    <dt>Customer</dt>
-                    <dd>{{consent.customer}} </dd>                    
-                    <dt>From</dt>
-                    <dd>{{consent.requester}} </dd>
-                    <dt>State</dt>
-                    <dd>{{consent.getState}}</dd>
-                  </dl>
-                </td>
-                {{#if (eq consent.getState 'REQUESTED')}}
-                  <span class="pull-right">
-                    <button type="button" class="btn btn-sm btn-success" {{action 'accept' consent}}>Accept</button>
-                    <button type="button" class="btn btn-sm btn-warning" {{action 'reject' consent}}>Reject</button>
-                  </span>
-                {{/if}}
-                <td>
-                </td>
-              </tr>
-            </table>
-          </li>
+        <ul class="list-group">          
+          {{#each model as |consent|}}
+            {{consent-item consent=consent}}
           {{/each}}
         </ul>
       </div>

@@ -1,0 +1,26 @@
+<li class="list-group-item">
+  <table class="table table-striped">
+    <tr>
+      <td>
+        <dl class="dl-horizontal">
+          <dt>ID</dt>
+          <dd>{{consent.id}}</dd>
+          <dt>Customer</dt>
+          <dd>{{consent.customer}}</dd>
+          <dt>From</dt>
+          <dd>{{consent.requester}}</dd>
+          <dt>State</dt>
+          <dd>{{consent.getState}}</dd>
+        </dl>
+      </td>
+      <td>
+        {{#if (eq consent.getState 'REQUESTED')}}
+          <span class="pull-right">
+            {{async-button class="btn btn-sm btn-success" action=(action 'accept' consent) default="Accept" pending="Accepting..."}}
+            {{async-button class="btn btn-sm btn-warning" action=(action 'reject' consent) default="Reject" pending="Rejecting..."}}
+          </span>
+        {{/if}}
+      </td>
+    </tr>
+  </table>
+</li>
