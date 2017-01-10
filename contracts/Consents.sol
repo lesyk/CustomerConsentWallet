@@ -24,7 +24,7 @@ contract Consents {
     event ConsentRevoked (address customer, address data_owner, address data_requester, bytes16 id);
     event ConsentRequested (address customer, address data_owner, address data_requester, bytes16 id);
 
-    function Consents() {
+    function Consents() payable {
         owner = msg.sender;
     }
 
