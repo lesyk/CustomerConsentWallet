@@ -42,7 +42,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         if(!error) {
           let length = result.toString(10);
           for(var i = 0; i < length; i++) {
-              contract.getConsent(i, consentResultCallback);
+              contract.customer_mapping(customer_address, i , (error, result) => {
+                if(!error) {
+                  contract.getConsent(result.toString(10), consentResultCallback);
+                } else {
+                  console.log(error);
+                }
+              });
           }
         } else {
           console.log(error);
