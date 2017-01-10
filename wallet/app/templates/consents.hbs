@@ -10,7 +10,7 @@
         <h3 class="panel-title">Consents</h3>
       </div>
 
-      <div class="panel-body">
+      <div class="panel-body consents">
 
         {{#if eventError}}
           <div class="alert alert-danger">{{eventError}}</div>
@@ -19,11 +19,30 @@
         <ul class="list-group">
           {{#each consents as |consent|}}
           <li class="list-group-item">
-            id: {{consent.id}} from: {{consent.requester}} state: {{consent.state}}
-            <span class="pull-right">
-              <button type="button" class="btn btn-sm btn-success" {{action 'accept' event}}>Accept</button>
-              <button type="button" class="btn btn-sm btn-warning" {{action 'reject' event}}>Reject</button>
-            </span>
+            <table class="table table-striped">
+              <tr>
+                <td>
+                  <dl class="dl-horizontal">
+                    <dt>ID</dt>
+                    <dd>{{consent.id}}</dd>
+                    <dt>Customer</dt>
+                    <dd>{{consent.customer}} </dd>                    
+                    <dt>From</dt>
+                    <dd>{{consent.requester}} </dd>
+                    <dt>State</dt>
+                    <dd>{{consent.getState}}</dd>
+                  </dl>
+                </td>
+                {{#if (eq consent.getState 'REQUESTED')}}
+                  <span class="pull-right">
+                    <button type="button" class="btn btn-sm btn-success" {{action 'accept' consent}}>Accept</button>
+                    <button type="button" class="btn btn-sm btn-warning" {{action 'reject' consent}}>Reject</button>
+                  </span>
+                {{/if}}
+                <td>
+                </td>
+              </tr>
+            </table>
           </li>
           {{/each}}
         </ul>

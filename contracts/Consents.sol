@@ -7,7 +7,7 @@ contract Consents {
     mapping (bytes16 => uint) public id_mapping;
     mapping (address => uint[]) public customer_mapping;
 
-    // array of all consents, public accesible on index
+    // array of all consents, public accessible on index
     Consent[] public consents;
 
     enum State {Requested, Given, Revoked, Rejected}
@@ -20,9 +20,13 @@ contract Consents {
         State state;
     }
 
-    event ConsentGiven (address customer, address data_owner, address data_requester, bytes16 id);
+    event ConsentGiven (bool given, address customer, address data_owner, address data_requester, bytes16 id);
     event ConsentRevoked (address customer, address data_owner, address data_requester, bytes16 id);
     event ConsentRequested (address customer, address data_owner, address data_requester, bytes16 id);
+
+    // used for debugging
+    event PrintAddress(address x);
+    event PrintString(string x);
 
     function Consents() {
         owner = msg.sender;
@@ -38,11 +42,9 @@ contract Consents {
     }
 
     function giveConsent(address data_requester, address data_owner, bytes16 id) returns (bool) {
-        if(changeConsent(msg.sender, data_owner, data_requester, id, State.Given)) {
-            ConsentGiven(msg.sender, data_owner, data_requester, id);
-            return true;
-        }
-        return false;
+        var given = changeConsent(msg.sender, data_owner, data_requester, id, State.Given);
+        ConsentGiven(given, msg.sender, data_owner, data_requester, id);
+        return given;
     }
 
     function revokeConsent(address data_requester, address data_owner, bytes16 id) returns (bool) {
@@ -63,13 +65,12 @@ contract Consents {
 
     function changeConsent(address customer, address data_owner, address data_requester, bytes16 id, State newState) private returns (bool) {
         var index = id_mapping[id];
-
         Consent consent = consents[index];
 
-        if (consent.customer == customer
-            && consent.data_owner == data_owner
-            && consent.data_requester == data_requester
-            && consent.state != newState) {
+        if (consent.customer == customer &&
+            consent.data_owner == data_owner &&
+            consent.data_requester == data_requester &&
+            consent.state != newState) {
                 consent.state = newState;
                 return true;
             }

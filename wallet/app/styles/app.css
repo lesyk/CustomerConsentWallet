@@ -1,3 +1,11 @@
 .container {
   width: 80%;
 }
+
+.consents dt {
+  width: 100px;
+}
+
+.consents dd {
+  margin-left: 120px;
+}

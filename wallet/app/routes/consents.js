@@ -24,7 +24,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     let consentResultCallback = (error, result) => {
         if(!error) {
-          console.log(result);
           let consent = Consent.create({
             requester: result[0],
             customer: result[1],
@@ -52,28 +51,32 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   actions: {
-    accept: function(event) {
+    accept: function(consent, i) {
       let web3 = this.get("web3").instance();
       let contract = this.get("contract");
       let controller = this.get("controller");
       let gasPrice = 50000000000;
       let gas = 500000;
-      console.log(event.args.data_requester);
-      contract.giveConsent(event.args.data_requester, event.args.data_owner, event.args.id, {gas: gas, gasPrice: gasPrice}, function(error, result) {
+
+      contract.giveConsent(web3.toHex(consent.requester), web3.toHex(consent.owner), web3.toHex(consent.id), {gas: gas, gasPrice: gasPrice}, function(error, result) {
         if(error !== null) {
           console.log(error);
           controller.set("eventError", "Request could not be completed");
         } else {
-          controller.set("eventError", "");
-          // web3.eth.getTransaction(result, function(error, result) {
-          //   if(error !== null) {
-          //     console.log(error);
-          //     controller.set("eventError", "Request could not be completed");
-          //   } else {
-          //     console.log("Got transaction");
-          //     console.log(result);
-          //   }
-          // });
+
+          let givenEvent = contract.ConsentGiven(function(error, result) {
+            if(!error) {
+              console.log(result.args);
+
+              // TODO update UI
+              // TODO possibly show feedback on when transaction is mined (& has x confirmations)
+              if(result.args.given === true) {
+                consent.state = 1;
+              }
+            } else {
+              console.log(error);
+            }
+          });
         }
       });
     },
