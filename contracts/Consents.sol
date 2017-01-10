@@ -28,7 +28,7 @@ contract Consents {
     event PrintAddress(address x);
     event PrintString(string x);
 
-    function Consents() {
+    function Consents() payable {
         owner = msg.sender;
     }
 
