@@ -10,32 +10,44 @@
     {{#if seedGenerated}}
       <div class="alert alert-info">
         <div>Your new wallet seed is:</div>
-        <div style="padding-left:15px;"><bold><em>{{seed}}</em></bold></div>
+        <div style="padding-left:15px;">
+          <bold><em>{{seed}}</em></bold>
+        </div>
         <div>Please write it down on paper or in a password manager, you will need it to access your wallet. Do not let anyone see this seed or they can take your Ether.</div>
       </div>
     {{/if}}
   </div>
 </div>
 <form {{action 'login' on='submit'}}>
-<div class="row">
-  <div class="col-md-6">
-    <div class="form-group">
-      <label for="seed">Seed phrase</label>
-      <div class="input-group">
-        {{input value=seed type="text" id="seed" class="form-control" placeholder="Seed phrase" required="" autofocus=""}}
-        <span class="input-group-btn"><button {{action "generateSeed"}} class="btn btn-primary">Generate seed phrase</button></span>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="seed">Seed phrase</label>
+        <div class="input-group">
+          {{input value=seed type="text" id="seed" class="form-control" placeholder="Seed phrase" required="" autofocus=""}}
+          <span class="input-group-btn"><button {{action "generateSeed"}} class="btn btn-primary">Generate seed phrase</button></span>
+        </div>
+        <div>
+          <small class="text-muted">Enter seed phrase or generate one to create a new wallet</small>
+        </div>
       </div>
-      <div><small>Enter seed phrase or generate one to create a new wallet</small></div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-    <div class="form-group">
-      <label for="password">Password</label>
-      {{input value=password type="password" id="password" class="form-control" placeholder="Password" required=""}}
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="email">Email</label>
+        {{input value=email type="email" id="email" class="form-control" placeholder="email@example.com" required=""}}
+      </div>
     </div>
-    <button class="btn btn-primary btn-block" type="submit">Login</button>
   </div>
-</div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="password">Password</label>
+        {{input value=password type="password" id="password" class="form-control" placeholder="Password" required=""}}
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Login</button>
+    </div>
+  </div>
 </form>
