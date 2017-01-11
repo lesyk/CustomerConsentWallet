@@ -16,23 +16,28 @@ export default Ember.Component.extend({
       let contract = this.get("contractService").getConsentContract();
       let gasPrice = 50000000000;
       let gas = 500000;
+      let state = 1;
+      let stateText = "GIVEN";
 
       return new Ember.RSVP.Promise((resolve, reject) => {
-        contract.giveConsent(web3.toHex(consent.requester), web3.toHex(consent.owner), web3.toHex(consent.id), {gas: gas, gasPrice: gasPrice}, (error, result) => {
+        contract.updateConsent(web3.toHex(consent.requester), web3.toHex(consent.owner), web3.toHex(consent.id), state, {gas: gas, gasPrice: gasPrice}, (error, result) => {
           if (error !== null) {
             this.rejected(error);
             reject();
           } else {
-            let givenEvent = contract.ConsentGiven((error, result) => {
+            contract.ConsentUpdated((error, result) => {
               if (!error) {
-                if (result.args.id === consent.id && result.args.given === true) {
-                  this.$(".state").text("GIVEN");
-                  this.set("isDone", true);
-                  resolve();
-                } else {
-                  this.rejected("Consent could not be given according to contract specification");
-                  reject();
+                if (result.args.id === consent.id && result.args.state.toString(10) === state.toString()) {
+                  if (result.args.updated === true) {
+                    this.$(".state").text(stateText);
+                    this.set("isDone", true);
+                    resolve();
+                  } else {
+                    this.rejected("Consent could not be updated according to contract specification");
+                    reject();
+                  }
                 }
+                // else wait for event for this consent
               } else {
                 this.rejected(error);
                 reject();
@@ -42,8 +47,41 @@ export default Ember.Component.extend({
         });
       });
     },
-    rejectConsent: function(id) {
-      console.log("reject");
+    rejectConsent: function(consent) {
+      let web3 = this.get("web3").instance();
+      let contract = this.get("contractService").getConsentContract();
+      let gasPrice = 50000000000;
+      let gas = 500000;
+      let state = 3;
+      let stateText = "REJECTED";
+
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        contract.updateConsent(web3.toHex(consent.requester), web3.toHex(consent.owner), web3.toHex(consent.id), state, {gas: gas, gasPrice: gasPrice}, (error, result) => {
+          if (error !== null) {
+            this.rejected(error);
+            reject();
+          } else {
+            contract.ConsentUpdated((error, result) => {
+              if (!error) {
+                if (result.args.id === consent.id && result.args.state.toString(10) === state.toString()) {
+                  if (result.args.updated === true) {
+                    this.$(".state").text(stateText);
+                    this.set("isDone", true);
+                    resolve();
+                  } else {
+                    this.rejected("Consent could not be updated according to contract specification");
+                    reject();
+                  }
+                }
+                // else wait for event for this consent
+              } else {
+                this.rejected(error);
+                reject();
+              }
+            });
+          }
+        });
+      });
     }
   }
 });

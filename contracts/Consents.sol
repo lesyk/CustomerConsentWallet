@@ -20,9 +20,8 @@ contract Consents {
         State state;
     }
 
-    event ConsentGiven (bool given, address customer, address data_owner, address data_requester, bytes16 id);
-    event ConsentRevoked (address customer, address data_owner, address data_requester, bytes16 id);
     event ConsentRequested (address customer, address data_owner, address data_requester, bytes16 id);
+    event ConsentUpdated (bool updated, address customer, address data_owner, address data_requester, State state, bytes16 id);
 
     // used for debugging
     event PrintAddress(address x);
@@ -41,18 +40,11 @@ contract Consents {
         ConsentRequested(customer, data_owner, msg.sender, id);
     }
 
-    function giveConsent(address data_requester, address data_owner, bytes16 id) returns (bool) {
-        var given = changeConsent(msg.sender, data_owner, data_requester, id, State.Given);
-        ConsentGiven(given, msg.sender, data_owner, data_requester, id);
-        return given;
-    }
-
-    function revokeConsent(address data_requester, address data_owner, bytes16 id) returns (bool) {
-        if(changeConsent(msg.sender, data_owner, data_requester, id, State.Revoked)) {
-            ConsentRevoked(msg.sender, data_owner, data_requester, id);
-            return true;
-        }
-        return false;
+    // assumes that it is called by customer
+    function updateConsent(address data_requester, address data_owner, bytes16 id, State state) returns (bool) {
+      var updated = changeConsent(msg.sender, data_owner, data_requester, id, state);
+      ConsentUpdated(updated, msg.sender, data_owner, data_requester, state, id);
+      return updated;
     }
 
     function getConsent(uint index) constant returns (address, address, address, State, bytes16) {
