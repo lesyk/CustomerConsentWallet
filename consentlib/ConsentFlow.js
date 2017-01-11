@@ -312,15 +312,18 @@ class ConsentFlow {
         return newContract;
     }
 
-    requestConsent(customer, dataOwner) {
+    newConsentId() {
+        return Math.floor(Math.random() * 10000);
+    }
+
+    requestConsent(customer, dataOwner, consentId) {
 
         let contract = this.web3.eth.contract(this.contractAbi).at(this.contractAddress);
-        let consentId = Math.floor(Math.random() * 10000);
-        let hexCustomer =  this.web3.toHex(customer);
-        let hexDataOwner =  this.web3.toHex(dataOwner);
-        let hexConsentId =  this.web3.toHex(consentId);
+        let hexCustomer = this.web3.toHex(customer);
+        let hexDataOwner = this.web3.toHex(dataOwner);
+        let hexConsentId = this.web3.toHex(consentId);
 
-        console.log("Requesting consent customer", hexCustomer, "data owner", hexDataOwner, "consent id", hexConsentId);
+        console.log("Requesting consent Customer", hexCustomer, "DataOwner", hexDataOwner, "ConsentID", hexConsentId);
 
         let promise = new Promise((resolve, reject) => {
             contract.requestConsent(hexCustomer, hexConsentId, consentId, {
@@ -332,6 +335,28 @@ class ConsentFlow {
                     reject(Error(error));
                 } else {
                     console.log("Consent requested at transaction", result);
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    consentGiven(consentId) {
+
+        let contract = this.web3.eth.contract(this.contractAbi).at(this.contractAddress);
+        let hexConsentId = this.web3.toHex(consentId);
+
+        console.log("Listening for consent response", hexConsentId);
+
+        let promise = new Promise((resolve, reject) => {
+            contract.ConsentGiven({id: consentId}, (error, result) => {
+                if (error) {
+                    console.log("Failed to read consent response", error);
+                    reject(Error(error));
+                } else {
+                    console.log("Consent given", hexConsentId);
                     resolve(result);
                 }
             });
