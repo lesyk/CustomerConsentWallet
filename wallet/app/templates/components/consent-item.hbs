@@ -10,14 +10,14 @@
           <dt>From</dt>
           <dd>{{consent.requester}}</dd>
           <dt>State</dt>
-          <dd>{{consent.getState}}</dd>
+          <dd class="state">{{consent.getState}}</dd>
         </dl>
       </td>
       <td>
         {{#if (eq consent.getState 'REQUESTED')}}
           <span class="pull-right">
-            {{async-button class="btn btn-sm btn-success" action=(action 'accept' consent) default="Accept" pending="Accepting..."}}
-            {{async-button class="btn btn-sm btn-warning" action=(action 'reject' consent) default="Reject" pending="Rejecting..."}}
+            {{async-button class="btn btn-sm btn-success acceptConsent" action=(action 'acceptConsent' consent) default="Accept" pending="Accepting..." fulfilled="Accepted" disableWhen=isDone}}
+            {{async-button class="btn btn-sm btn-warning rejectConsent" action=(action 'rejectConsent' consent) default="Reject" pending="Rejecting..." fulfilled="Rejected" disableWhen=isDone}}
           </span>
         {{/if}}
       </td>
