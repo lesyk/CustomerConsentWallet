@@ -21,18 +21,20 @@ let priority = 100;
 let accountUnlocked = web3.personal.unlockAccount(address, passphrase);
 let source = FS.readFileSync('./PayingBackContract.sol', 'utf8');
 
+web3.eth.defaultAccount = address;
+
 consentFlow.discoverIdentityService((err, result, idServiceAddress) => {
 
     setTimeout(() => consentFlow.registerWhisperId(identity, idServiceAddress, email, ttl, priority), 200);
 
     setTimeout(() => {
         consentFlow.lookupWhisperIds(identity, idServiceAddress, [
-            "umbrella-corp1@example.com",
-            "goliath-national-bank@example.com"
+            "goliath-national-bank@example.com",
+            "user1@example.com"
         ], ttl, priority, 9000).then((whisperIds) =>
             consentFlow.lookupEthAddresses(identity, whisperIds, ttl, priority, 9000)
-        ).then((ethAdresses) =>
-            consentFlow.newContract(address, source, "PayingBackContract")
+        ).then((ethAddresses) =>
+            consentFlow.requestConsent(ethAddresses.get("user1@example.com"), ethAddresses.get("goliath-national-bank@example.com"))
         )
     }, 1000);
 });

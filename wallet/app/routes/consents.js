@@ -54,9 +54,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     let consentLib = this.get("consentLib").initialize(web3);
     let email = this.get("session").get("data.email");
     let addresses = web3.currentProvider.transaction_signer.getAddresses();
-    
+
     consentLib.registerWithIdService(email);
-    consentLib.respondEthAddress(addresses[0]);
+    consentLib.respondEthAddress("0x" + addresses[0]);
     controller.set("email", email);
 
     controller.set('model', model);
