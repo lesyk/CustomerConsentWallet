@@ -4,7 +4,11 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-    // Add options here
+    minifyJS: {
+      options: {
+        exclude: ["**/vendor.js"]
+      }
+    }
   });
 
   app.import('bower_components/web3/dist/web3.min.js');
