@@ -280,7 +280,7 @@ class ConsentFlow {
         let hexDataOwner = this.web3.toHex(dataOwner);
         let hexConsentId = this.web3.toHex(consentId);
 
-        console.log("Requesting consent Customer", hexCustomer, "DataOwner", hexDataOwner, "ConsentID", hexConsentId);
+        console.log("Requesting consent", hexCustomer, hexDataOwner, hexConsentId);
 
         let promise = new Promise((resolve, reject) => {
             contract.requestConsent(hexCustomer, hexConsentId, consentId, {
@@ -303,18 +303,21 @@ class ConsentFlow {
     consentGiven(consentId) {
 
         let contract = this.getConsentContract();
-        let hexConsentId = this.web3.toHex(consentId);
+        let hexMask = 0x10000000000000000000000000000000;
+        let hexConsentId = "0x" + (this.web3.toHex(consentId) * hexMask).toString(16).substring(0, 32);
 
         console.log("Listening for consent response", hexConsentId);
 
         let promise = new Promise((resolve, reject) => {
-            contract.ConsentGiven({id: consentId}, (error, result) => {
+            contract.ConsentUpdated((error, result) => {
                 if (error) {
                     console.log("Failed to read consent response", error);
                     reject(Error(error));
-                } else {
-                    console.log("Consent given", hexConsentId);
+                } else if (result && result.args.id == hexConsentId) {
+                    console.log("Consent given", result.args.id);
                     resolve(result);
+                } else {
+                    console.log("Irrelevant response", result.args.id);
                 }
             });
         });
