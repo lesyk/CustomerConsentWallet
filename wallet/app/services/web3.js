@@ -36,7 +36,7 @@ export default Service.extend({
             throw err;
           }
 
-          ks.generateNewAddress(pwDerivedKey, 5);
+          ks.generateNewAddress(pwDerivedKey, 1);
 
           ks.passwordProvider = function (callback) {
             var pw = prompt("Please enter password", "Password");
