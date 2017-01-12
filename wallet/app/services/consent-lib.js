@@ -39,5 +39,9 @@ export default Service.extend({
   respondEthAddress: function (address) {
     this.set("address", address);
     this.get("consentFlow").respondEthAddress(this.get("identity"), this.get("email"), address, this.get("ttl"), this.get("priority"));
+  },
+
+  getConsentContract: function () {
+    return this.get("consentFlow").getConsentContract();
   }
 });

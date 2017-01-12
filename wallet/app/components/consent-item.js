@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   web3: Ember.inject.service(),
-  contractService: Ember.inject.service('consent-contract'),
+  consentLib: Ember.inject.service('consent-lib'),
   isDone: false,
 
   rejected: function(errorMsg) {
@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   actions: {
     acceptConsent: function(consent) {
       let web3 = this.get("web3").instance();
-      let contract = this.get("contractService").getConsentContract();
+      let contract = this.get("consentLib").initialize(web3).getConsentContract();
       let gasPrice = 50000000000;
       let gas = 500000;
       let state = 1;

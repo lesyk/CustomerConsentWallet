@@ -9,7 +9,7 @@ class ConsentFlow {
         this.idServiceAddress = null;
         this.gasPrice = 50000000000;
         this.gas = 500000;
-        this.contractAddress = '0x93F231fBeFE32D54A38690ddaA425222Cab7e957';
+        this.contractAddress = '0x700355626605434510B7396e6DB3e752aC78739f';
         this.contractAbi = [{
             "constant": false,
             "inputs": [
@@ -40,9 +40,10 @@ class ConsentFlow {
             "inputs": [
                 {"name": "data_requester", "type": "address"},
                 {"name": "data_owner", "type": "address"},
-                {"name": "id", "type": "bytes16"}
+                {"name": "id", "type": "bytes16"},
+                {"name": "state", "type": "uint8"}
             ],
-            "name": "giveConsent",
+            "name": "updateConsent",
             "outputs": [{"name": "", "type": "bool"}],
             "payable": false,
             "type": "function"
@@ -60,19 +61,13 @@ class ConsentFlow {
             "constant": true,
             "inputs": [{"name": "index", "type": "uint256"}],
             "name": "getConsent",
-            "outputs": [{
-                "name": "",
-                "type": "address",
-                "value": "0x20f33d4743731db02b52f1de7fb762ef3fc471e3"
-            }, {"name": "", "type": "address", "value": "0x129d0c1d983262dcee658cacae1db7682330905a"}, {
-                "name": "",
-                "type": "address",
-                "value": "0x129d0c1d983262dcee658cacae1db7682330905a"
-            }, {"name": "", "type": "uint8", "value": "0"}, {
-                "name": "",
-                "type": "bytes16",
-                "value": "0x12300000000000000000000000000000"
-            }],
+            "outputs": [
+                {"name": "", "type": "address", "value": "0x"},
+                {"name": "", "type": "address", "value": "0x"},
+                {"name": "", "type": "address", "value": "0x"},
+                {"name": "", "type": "uint8", "value": "0"},
+                {"name": "", "type": "bytes16", "value": "0x"}
+            ],
             "payable": false,
             "type": "function"
         }, {
@@ -83,81 +78,39 @@ class ConsentFlow {
             "payable": false,
             "type": "function"
         }, {
-            "constant": false,
-            "inputs": [
-                {"name": "data_requester", "type": "address"},
-                {"name": "data_owner", "type": "address"},
-                {"name": "id", "type": "bytes16"}
-            ],
-            "name": "revokeConsent",
-            "outputs": [{"name": "", "type": "bool"}],
-            "payable": false,
-            "type": "function"
-        }, {
             "constant": true,
             "inputs": [{"name": "", "type": "uint256"}],
             "name": "consents",
-            "outputs": [{
-                "name": "id",
-                "type": "bytes16",
-                "value": "0x12300000000000000000000000000000"
-            }, {
-                "name": "data_requester",
-                "type": "address",
-                "value": "0x0000000000000000000000000000000020f33d47"
-            }, {
-                "name": "customer",
-                "type": "address",
-                "value": "0x3fc471e3000000000000000000000000129d0c1d"
-            }, {
-                "name": "data_owner",
-                "type": "address",
-                "value": "0x2330905a000000000000000000000000129d0c1d"
-            }, {
-                "name": "state",
-                "type": "uint8",
-                "value": "6.8840577665331762960062340143144211974827539722152103940360052033988904091648e+76"
-            }],
+            "outputs": [
+                {"name": "id", "type": "bytes16", "value": "0x"},
+                {"name": "data_requester", "type": "address", "value": "0x"},
+                {"name": "customer", "type": "address", "value": "0x"},
+                {"name": "data_owner", "type": "address", "value": "0x"},
+                {"name": "state", "type": "uint8", "value": "0"}
+            ],
             "payable": false,
             "type": "function"
-        }, {"inputs": [], "payable": false, "type": "constructor"}, {
+        }, {"inputs": [], "payable": true, "type": "constructor"}, {
             "anonymous": false,
-            "inputs": [{"indexed": false, "name": "given", "type": "bool"}, {
-                "indexed": false,
-                "name": "customer",
-                "type": "address"
-            }, {"indexed": false, "name": "data_owner", "type": "address"}, {
-                "indexed": false,
-                "name": "data_requester",
-                "type": "address"
-            }, {"indexed": false, "name": "id", "type": "bytes16"}],
-            "name": "ConsentGiven",
-            "type": "event"
-        }, {
-            "anonymous": false,
-            "inputs": [{"indexed": false, "name": "customer", "type": "address"}, {
-                "indexed": false,
-                "name": "data_owner",
-                "type": "address"
-            }, {"indexed": false, "name": "data_requester", "type": "address"}, {
-                "indexed": false,
-                "name": "id",
-                "type": "bytes16"
-            }],
-            "name": "ConsentRevoked",
-            "type": "event"
-        }, {
-            "anonymous": false,
-            "inputs": [{"indexed": false, "name": "customer", "type": "address"}, {
-                "indexed": false,
-                "name": "data_owner",
-                "type": "address"
-            }, {"indexed": false, "name": "data_requester", "type": "address"}, {
-                "indexed": false,
-                "name": "id",
-                "type": "bytes16"
-            }],
+            "inputs": [
+                {"indexed": false, "name": "customer", "type": "address"},
+                {"indexed": false, "name": "data_owner", "type": "address"},
+                {"indexed": false, "name": "data_requester", "type": "address"},
+                {"indexed": false, "name": "id", "type": "bytes16"}
+            ],
             "name": "ConsentRequested",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [
+                {"indexed": false, "name": "updated", "type": "bool"},
+                {"indexed": false, "name": "customer", "type": "address"},
+                {"indexed": false, "name": "data_owner", "type": "address"},
+                {"indexed": false, "name": "data_requester", "type": "address"},
+                {"indexed": false, "name": "state", "type": "uint8"},
+                {"indexed": false, "name": "id", "type": "bytes16"}
+            ],
+            "name": "ConsentUpdated",
             "type": "event"
         }, {
             "anonymous": false,
@@ -170,6 +123,10 @@ class ConsentFlow {
             "name": "PrintString",
             "type": "event"
         }];
+    }
+
+    getConsentContract() {
+        return this.web3.eth.contract(this.contractAbi).at(this.contractAddress);
     }
 
     discoverIdentityService(callback) {
@@ -345,7 +302,7 @@ class ConsentFlow {
 
     consentGiven(consentId) {
 
-        let contract = this.web3.eth.contract(this.contractAbi).at(this.contractAddress);
+        let contract = this.getConsentContract();
         let hexConsentId = this.web3.toHex(consentId);
 
         console.log("Listening for consent response", hexConsentId);

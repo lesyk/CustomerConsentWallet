@@ -4,8 +4,7 @@ import Consent from "../models/consent";
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   web3: Ember.inject.service(),
-  consentLib: Ember.inject.service("consentlib"),
-  contractService: Ember.inject.service('consent-contract'),
+  consentLib: Ember.inject.service("consent-lib"),
   session: Ember.inject.service('session'),
 
   beforeModel: function() {
@@ -15,7 +14,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   model: function() {
     let web3 = this.get("web3").instance();
-    let contract = this.get("contractService").getConsentContract();
+    let contract = this.get("consentLib").initialize(web3).getConsentContract();
     let customer_address = "0x" + web3.eth.defaultAccount;
 
     return new Ember.RSVP.Promise((resolve, reject) => {
