@@ -19,16 +19,22 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       contract.customerConsents(customer_address, (error, result) => {
-        if(!error) {
+        if (!error) {
           let length = result.toString(10);
           var promises = [];
-          for(var i = 0; i < length; i++) {
+          for (var i = 0; i < length; i++) {
             let p = new Ember.RSVP.Promise((resolve, reject) => {
-              contract.customer_mapping(customer_address, i , (error, result) => {
-                if(!error) {
+              contract.customer_mapping(customer_address, i, (error, result) => {
+                if (!error) {
                   contract.getConsent(result.toString(10), (error, result) => {
-                    if(!error) {
-                      resolve(Consent.create({requester: result[0], customer: result[1], owner: result[2], state: result[3].toString(10), id: result[4]}));
+                    if (!error) {
+                      resolve(Consent.create({
+                        requester: result[0],
+                        customer: result[1],
+                        owner: result[2],
+                        state: result[3].toString(10),
+                        id: result[4]
+                      }));
                     } else {
                       reject(error);
                     }
@@ -40,7 +46,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
             });
             promises.push(p);
           }
-          Ember.RSVP.all(promises).then((results) => { resolve(results); });
+          Ember.RSVP.all(promises).then((results) => {
+            let consentMap = results.reduce(function(map, obj) {
+              map[obj.id] = obj;
+              return map;
+            }, {});
+            resolve(consentMap);
+          });
         } else {
           reject(error);
         }
@@ -48,15 +60,32 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
 
-  setupController: function (controller, model) {
+  setupController: function(controller, model) {
     let web3 = this.get("web3").instance();
     let consentLib = this.get("consentLib").initialize(web3);
     let email = this.get("session").get("data.email");
     let addresses = web3.currentProvider.transaction_signer.getAddresses();
+    let address = "0x" + addresses[0];
+    let contract = this.get("consentLib").initialize(web3).getConsentContract();
 
     consentLib.registerWithIdService(email);
-    consentLib.respondEthAddress("0x" + addresses[0]);
+    consentLib.respondEthAddress(address);
     controller.set("email", email);
+
+    contract.ConsentRequested((error, result) => {
+      if (result.args.customer === address) {
+        console.log("Got consent request");
+        let consent = Consent.create({
+          requester: result.args.data_requester,
+          customer: result.args.customer,
+          owner: result.args.data_owner,
+          state: 0,
+          id: result.args.id
+        });
+        model[consent.id] = consent;
+        controller.set('model', model);
+      }
+    });
 
     controller.set('model', model);
   },
