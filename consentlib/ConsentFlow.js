@@ -135,8 +135,6 @@ class ConsentFlow {
                 this.idServiceAddress = result.from;
                 console.log("Discovered Identity service at address", this.idServiceAddress);
                 callback(err, result, this.idServiceAddress);
-            } else {
-                console.log("Identity service address unchanged", this.idServiceAddress);
             }
         });
     }
