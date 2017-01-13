@@ -17,9 +17,9 @@
         {{/if}}
 
         <ul class="list-group">
-          {{#each model consent}}
+          {{#each model as |consent|}}
             {{consent-item consent=consent}}
-          {{/each-in}}
+          {{/each}}
         </ul>
       </div>
     </div>
