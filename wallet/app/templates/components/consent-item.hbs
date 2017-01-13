@@ -16,8 +16,8 @@
       <td>
         {{#if (eq consent.getState 'REQUESTED')}}
           <span class="pull-right">
-            {{async-button class="btn btn-sm btn-success acceptConsent" action=(action 'acceptConsent' consent) default="Accept" pending="Accepting..." fulfilled="Accepted" disableWhen=isDone}}
-            {{async-button class="btn btn-sm btn-warning rejectConsent" action=(action 'rejectConsent' consent) default="Reject" pending="Rejecting..." fulfilled="Rejected" disableWhen=isDone}}
+            {{async-button class="btn btn-sm btn-success acceptConsent" action=(action 'acceptConsent' consent) default="Accept" pending="Accepting..." fulfilled="Accepted"}}
+            {{async-button class="btn btn-sm btn-warning rejectConsent" action=(action 'rejectConsent' consent) default="Reject" pending="Rejecting..." fulfilled="Rejected"}}
           </span>
         {{/if}}
       </td>

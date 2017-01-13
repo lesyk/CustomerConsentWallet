@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   web3: Ember.inject.service(),
   consentLib: Ember.inject.service('consent-lib'),
-  isDone: false,
 
   rejected: function(errorMsg) {
     console.error(errorMsg);
@@ -25,12 +24,14 @@ export default Ember.Component.extend({
             this.rejected(error);
             reject();
           } else {
-            contract.ConsentUpdated((error, result) => {
+            let event = contract.ConsentUpdated();
+            event.watch((error, result) => {
               if (!error) {
                 if (result.args.id === consent.id && result.args.state.toString(10) === state.toString()) {
                   if (result.args.updated === true) {
                     this.$(".state").text(stateText);
-                    this.set("isDone", true);
+                    this.$(".acceptConsent").hide();
+                    this.$(".rejectConsent").hide();
                     resolve();
                   } else {
                     this.rejected("Consent could not be updated according to contract specification");
@@ -42,6 +43,7 @@ export default Ember.Component.extend({
                 this.rejected(error);
                 reject();
               }
+              event.stopWatching();
             });
           }
         });
@@ -49,7 +51,7 @@ export default Ember.Component.extend({
     },
     rejectConsent: function(consent) {
       let web3 = this.get("web3").instance();
-      let contract = this.get("contractService").getConsentContract();
+      let contract = this.get("consentLib").initialize(web3).getConsentContract();
       let gasPrice = 50000000000;
       let gas = 500000;
       let state = 3;
@@ -61,12 +63,14 @@ export default Ember.Component.extend({
             this.rejected(error);
             reject();
           } else {
-            contract.ConsentUpdated((error, result) => {
+            let event = contract.ConsentUpdated();
+            event.watch((error, result) => {
               if (!error) {
                 if (result.args.id === consent.id && result.args.state.toString(10) === state.toString()) {
                   if (result.args.updated === true) {
                     this.$(".state").text(stateText);
-                    this.set("isDone", true);
+                    this.$(".acceptConsent").hide();
+                    this.$(".rejectConsent").hide();
                     resolve();
                   } else {
                     this.rejected("Consent could not be updated according to contract specification");
@@ -80,6 +84,7 @@ export default Ember.Component.extend({
               }
             });
           }
+          event.stopWatching();
         });
       });
     }
