@@ -17,8 +17,8 @@
         {{/if}}
 
         <ul class="list-group">
-          {{#each-in model as |key val|}}            
-            {{consent-item consent=val}}
+          {{#each model consent}}
+            {{consent-item consent=consent}}
           {{/each-in}}
         </ul>
       </div>

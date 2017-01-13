@@ -6,6 +6,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   web3: Ember.inject.service(),
   consentLib: Ember.inject.service("consent-lib"),
   session: Ember.inject.service('session'),
+  consentRequestEvent: null,
+  consentIds: [],
 
   beforeModel: function() {
     let web3 = this.get("web3").instance();
@@ -47,11 +49,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
             promises.push(p);
           }
           Ember.RSVP.all(promises).then((results) => {
-            let consentMap = results.reduce(function(map, obj) {
-              map[obj.id] = obj;
-              return map;
-            }, {});
-            resolve(consentMap);
+            this.set("consentIds", results.map((obj) => {
+              return obj.id;
+            }));
+            resolve(results);
           });
         } else {
           reject(error);
@@ -60,7 +61,15 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
 
+  resetController: function(controller, isExiting, transition) {
+    if (isExiting) {
+      this.get("consentRequestEvent").stopWatching();
+    }
+  },
+
   setupController: function(controller, model) {
+    this._super(controller, model);
+
     let web3 = this.get("web3").instance();
     let consentLib = this.get("consentLib").initialize(web3);
     let email = this.get("session").get("data.email");
@@ -72,9 +81,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     consentLib.respondEthAddress(address);
     controller.set("email", email);
 
-    contract.ConsentRequested((error, result) => {
+    let event = contract.ConsentRequested();
+    event.watch((error, result) => {
       if (result.args.customer === address) {
-        console.log("Got consent request");
+        console.log("Got consent request");        
         let consent = Consent.create({
           requester: result.args.data_requester,
           customer: result.args.customer,
@@ -82,12 +92,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           state: 0,
           id: result.args.id
         });
-        model[consent.id] = consent;
-        controller.set('model', model);
+        if (!this.get("consentIds").includes(consent.id)) {
+          model.pushObject(consent);
+          controller.set('model', model);
+          this.get("consentIds").push(consent.id);
+        }
       }
     });
-
-    controller.set('model', model);
+    this.set('consentRequestEvent', event);
   },
 
   actions: {
