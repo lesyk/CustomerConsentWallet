@@ -32,8 +32,10 @@ export default Ember.Component.extend({
                     this.$(".state").text(stateText);
                     this.$(".acceptConsent").hide();
                     this.$(".rejectConsent").hide();
+                    event.stopWatching();
                     resolve();
                   } else {
+                    event.stopWatching();
                     this.rejected("Consent could not be updated according to contract specification");
                     reject();
                   }
@@ -41,9 +43,9 @@ export default Ember.Component.extend({
                 // else wait for event for this consent
               } else {
                 this.rejected(error);
+                event.stopWatching();
                 reject();
               }
-              event.stopWatching();
             });
           }
         });
@@ -71,20 +73,22 @@ export default Ember.Component.extend({
                     this.$(".state").text(stateText);
                     this.$(".acceptConsent").hide();
                     this.$(".rejectConsent").hide();
+                    event.stopWatching();
                     resolve();
                   } else {
                     this.rejected("Consent could not be updated according to contract specification");
+                    event.stopWatching();
                     reject();
                   }
                 }
                 // else wait for event for this consent
               } else {
                 this.rejected(error);
+                event.stopWatching();
                 reject();
               }
             });
           }
-          event.stopWatching();
         });
       });
     }
