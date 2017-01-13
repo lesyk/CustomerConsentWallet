@@ -8,24 +8,18 @@ class ConsentFlow {
         this.solc = solc;
         this.idServiceAddress = null;
         this.gasPrice = 50000000000;
-        this.gas = 500000;
-        this.contractAddress = '0x700355626605434510B7396e6DB3e752aC78739f';
+        this.gas = 4000000;
+        this.contractAddress = '0x5E147E352fdE327ADDda8616fda402B45Ad8A3F4';
         this.contractAbi = [{
             "constant": false,
             "inputs": [
-                {"name": "customer", "type": "address"},
+                {"name": "data_requester", "type": "address"},
                 {"name": "data_owner", "type": "address"},
-                {"name": "id", "type": "bytes16"}
+                {"name": "id", "type": "uint256"},
+                {"name": "state", "type": "uint8"}
             ],
-            "name": "requestConsent",
-            "outputs": [],
-            "payable": false,
-            "type": "function"
-        }, {
-            "constant": true,
-            "inputs": [{"name": "", "type": "bytes16"}],
-            "name": "id_mapping",
-            "outputs": [{"name": "", "type": "uint256", "value": "0"}],
+            "name": "updateConsent",
+            "outputs": [{"name": "", "type": "bool"}],
             "payable": false,
             "type": "function"
         }, {
@@ -38,13 +32,23 @@ class ConsentFlow {
         }, {
             "constant": false,
             "inputs": [
-                {"name": "data_requester", "type": "address"},
+                {"name": "customer", "type": "address"},
                 {"name": "data_owner", "type": "address"},
-                {"name": "id", "type": "bytes16"},
-                {"name": "state", "type": "uint8"}
+                {"name": "id", "type": "uint256"}
             ],
-            "name": "updateConsent",
-            "outputs": [{"name": "", "type": "bool"}],
+            "name": "requestData",
+            "outputs": [],
+            "payable": false,
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [
+                {"name": "customer", "type": "address"},
+                {"name": "data_owner", "type": "address"},
+                {"name": "id", "type": "uint256"}
+            ],
+            "name": "requestConsent",
+            "outputs": [],
             "payable": false,
             "type": "function"
         }, {
@@ -66,8 +70,20 @@ class ConsentFlow {
                 {"name": "", "type": "address", "value": "0x"},
                 {"name": "", "type": "address", "value": "0x"},
                 {"name": "", "type": "uint8", "value": "0"},
-                {"name": "", "type": "bytes16", "value": "0x"}
+                {"name": "", "type": "uint256", "value": "0"}
             ],
+            "payable": false,
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [
+                {"name": "customer", "type": "address"},
+                {"name": "data_requester", "type": "address"},
+                {"name": "id", "type": "uint256"},
+                {"name": "payload", "type": "bytes"}
+            ],
+            "name": "provideData",
+            "outputs": [],
             "payable": false,
             "type": "function"
         }, {
@@ -82,7 +98,7 @@ class ConsentFlow {
             "inputs": [{"name": "", "type": "uint256"}],
             "name": "consents",
             "outputs": [
-                {"name": "id", "type": "bytes16", "value": "0x"},
+                {"name": "id", "type": "uint256", "value": "0"},
                 {"name": "data_requester", "type": "address", "value": "0x"},
                 {"name": "customer", "type": "address", "value": "0x"},
                 {"name": "data_owner", "type": "address", "value": "0x"},
@@ -90,13 +106,20 @@ class ConsentFlow {
             ],
             "payable": false,
             "type": "function"
-        }, {"inputs": [], "payable": true, "type": "constructor"}, {
+        }, {
+            "constant": true,
+            "inputs": [{"name": "", "type": "uint256"}],
+            "name": "id_mapping",
+            "outputs": [{"name": "", "type": "uint256", "value": "0"}],
+            "payable": false,
+            "type": "function"
+        }, {"inputs": [], "type": "constructor"}, {
             "anonymous": false,
             "inputs": [
                 {"indexed": false, "name": "customer", "type": "address"},
                 {"indexed": false, "name": "data_owner", "type": "address"},
                 {"indexed": false, "name": "data_requester", "type": "address"},
-                {"indexed": false, "name": "id", "type": "bytes16"}
+                {"indexed": false, "name": "id", "type": "uint256"}
             ],
             "name": "ConsentRequested",
             "type": "event"
@@ -108,9 +131,30 @@ class ConsentFlow {
                 {"indexed": false, "name": "data_owner", "type": "address"},
                 {"indexed": false, "name": "data_requester", "type": "address"},
                 {"indexed": false, "name": "state", "type": "uint8"},
-                {"indexed": false, "name": "id", "type": "bytes16"}
+                {"indexed": false, "name": "id", "type": "uint256"}
             ],
             "name": "ConsentUpdated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [
+                {"indexed": false, "name": "customer", "type": "address"},
+                {"indexed": false, "name": "data_owner", "type": "address"},
+                {"indexed": false, "name": "data_requester", "type": "address"},
+                {"indexed": false, "name": "id", "type": "uint256"}
+            ],
+            "name": "DataRequested",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [
+                {"indexed": false, "name": "customer", "type": "address"},
+                {"indexed": false, "name": "data_owner", "type": "address"},
+                {"indexed": false, "name": "data_requester", "type": "address"},
+                {"indexed": false, "name": "id", "type": "uint256"},
+                {"indexed": false, "name": "payload", "type": "bytes"}
+            ],
+            "name": "DataProvided",
             "type": "event"
         }, {
             "anonymous": false,
@@ -119,8 +163,8 @@ class ConsentFlow {
             "type": "event"
         }, {
             "anonymous": false,
-            "inputs": [{"indexed": false, "name": "x", "type": "string"}],
-            "name": "PrintString",
+            "inputs": [{"indexed": false, "name": "x", "type": "bytes"}],
+            "name": "Printbytes",
             "type": "event"
         }];
     }
@@ -268,7 +312,7 @@ class ConsentFlow {
     }
 
     newConsentId() {
-        return Math.floor(Math.random() * 10000);
+        return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
     }
 
     requestConsent(customer, dataOwner, consentId) {
@@ -276,12 +320,11 @@ class ConsentFlow {
         let contract = this.web3.eth.contract(this.contractAbi).at(this.contractAddress);
         let hexCustomer = this.web3.toHex(customer);
         let hexDataOwner = this.web3.toHex(dataOwner);
-        let hexConsentId = this.web3.toHex(consentId);
 
-        console.log("Requesting consent", hexCustomer, hexDataOwner, hexConsentId);
+        console.log("Requesting consent", hexCustomer, hexDataOwner, consentId);
 
         let promise = new Promise((resolve, reject) => {
-            contract.requestConsent(hexCustomer, hexConsentId, consentId, {
+            contract.requestConsent(hexCustomer, hexDataOwner, consentId, {
                 gas: this.gas,
                 gasPrice: this.gasPrice
             }, (error, result) => {
@@ -301,21 +344,117 @@ class ConsentFlow {
     consentGiven(consentId) {
 
         let contract = this.getConsentContract();
-        let hexMask = 0x10000000000000000000000000000000;
-        let hexConsentId = "0x" + (this.web3.toHex(consentId) * hexMask).toString(16).substring(0, 32);
 
-        console.log("Listening for consent response", hexConsentId);
+        console.log("Listening for consent response", consentId);
 
         let promise = new Promise((resolve, reject) => {
             contract.ConsentUpdated((error, result) => {
                 if (error) {
                     console.log("Failed to read consent response", error);
                     reject(Error(error));
-                } else if (result && result.args.id == hexConsentId) {
-                    console.log("Consent given", result.args.id);
+                } else if (result && result.args.id.toString(10) == consentId) {
+                    console.log("Consent given", result.args.id.toString(10));
                     resolve(result);
                 } else {
-                    console.log("Irrelevant response", result.args.id);
+                    console.log("Irrelevant consent response", result.args.id.toString(10));
+                    console.log(result);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    requestData(customer, dataOwner, consentId) {
+
+        let contract = this.getConsentContract();
+        let hexCustomer = this.web3.toHex(customer);
+        let hexDataOwner = this.web3.toHex(dataOwner);
+
+        console.log("Requesting data", hexCustomer, hexDataOwner, consentId);
+
+        let promise = new Promise((resolve, reject) => {
+            contract.requestData(hexCustomer, hexDataOwner, consentId, {
+                gas: this.gas,
+                gasPrice: this.gasPrice
+            }, (error, result) => {
+                if (error) {
+                    console.log("Failed to request data", error);
+                    reject(Error(error));
+                } else {
+                    console.log("Data requested at transaction", result);
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    provideData(customer, dataRequester, consentId, payload) {
+
+        let contract = this.getConsentContract();
+        let hexCustomer = this.web3.toHex(customer);
+        let hexDataRequester = this.web3.toHex(dataRequester);
+        let hexPayload = this.web3.fromAscii(payload);
+
+        console.log("Providing data", consentId, payload);
+
+        let promise = new Promise((resolve, reject) => {
+            contract.provideData(hexCustomer, hexDataRequester, consentId, hexPayload, {
+                gas: this.gas,
+                gasPrice: this.gasPrice
+            }, (error, result) => {
+                if (error) {
+                    console.log("Failed to provide data", error);
+                    reject(Error(error));
+                } else {
+                    console.log("Data provided at transaction", result);
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    dataRequested() {
+
+        let contract = this.getConsentContract();
+
+        console.log("Listening for data request");
+
+        let promise = new Promise((resolve, reject) => {
+            contract.DataRequested((error, result) => {
+                if (error) {
+                    console.log("Failed to read data request", error);
+                    reject(Error(error));
+                } else {
+                    console.log("Data request received", result.args.id.toString(10));
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    dataProvided(consentId) {
+
+        let contract = this.getConsentContract();
+
+        console.log("Listening for data", consentId);
+
+        let promise = new Promise((resolve, reject) => {
+            contract.DataProvided((error, result) => {
+                if (error) {
+                    console.log("Failed read data provided", error);
+                    reject(Error(error));
+                } else if (result && result.args.id.toString(10) == consentId) {
+                    console.log("Data provided", this.web3.toAscii(result.args.payload));
+                    resolve(this.web3.toAscii(result.args.payload));
+                } else {
+                    console.log("Irrelevant data provided", result.args.id.toString(10));
                 }
             });
         });

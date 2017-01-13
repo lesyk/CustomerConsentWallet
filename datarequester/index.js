@@ -37,4 +37,5 @@ consentFlow.discoverIdentityService((err, result, idServiceAddress) => {
     }, 1000);
 });
 
-setTimeout(() => consentFlow.consentGiven(consentId), 1000);
+setTimeout(() => consentFlow.consentGiven(consentId).then((result) => consentFlow.requestData(result.args.customer, result.args.data_owner, result.args.id.toString(10))), 1000);
+setTimeout(() => consentFlow.dataProvided(consentId).then((result) => console.log(result)), 1000);
