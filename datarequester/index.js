@@ -17,6 +17,8 @@ let address = process.argv[4];
 let ttl = 100;
 let priority = 100;
 let consentId = consentFlow.newConsentId();
+let customerEmail = process.argv[5];
+let ownerEmail = process.argv[6];
 
 web3.personal.unlockAccount(address, passphrase);
 web3.eth.defaultAccount = address;
@@ -27,12 +29,12 @@ consentFlow.discoverIdentityService((err, result, idServiceAddress) => {
 
     setTimeout(() => {
         consentFlow.lookupWhisperIds(identity, idServiceAddress, [
-            "goliath-national-bank@example.com",
-            "user1@example.com"
+            ownerEmail,
+            customerEmail
         ], ttl, priority, 9000).then((whisperIds) =>
             consentFlow.lookupEthAddresses(identity, whisperIds, ttl, priority, 9000)
         ).then((ethAddresses) =>
-            consentFlow.requestConsent(ethAddresses.get("user1@example.com"), ethAddresses.get("goliath-national-bank@example.com"), consentId)
+            consentFlow.requestConsent(ethAddresses.get(customerEmail), ethAddresses.get(ownerEmail), consentId)
         )
     }, 1000);
 });
