@@ -35,7 +35,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
                         customer: result[1],
                         owner: result[2],
                         state: result[3].toString(10),
-                        id: result[4]
+                        id: result[4].toString(10)
                       }));
                     } else {
                       reject(error);
@@ -90,7 +90,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           customer: result.args.customer,
           owner: result.args.data_owner,
           state: 0,
-          id: result.args.id
+          id: result.args.id.toString(10)
         });
         if (!this.get("consentIds").includes(consent.id)) {
           model.pushObject(consent);

@@ -27,7 +27,7 @@ export default Ember.Component.extend({
             let event = contract.ConsentUpdated();
             event.watch((error, result) => {
               if (!error) {
-                if (result.args.id === consent.id && result.args.state.toString(10) === state.toString()) {
+                if (result.args.id.toString(10) === consent.id && result.args.state.toString(10) === state.toString()) {
                   if (result.args.updated === true) {
                     this.$(".state").text(stateText);
                     this.$(".acceptConsent").hide();
@@ -68,7 +68,7 @@ export default Ember.Component.extend({
             let event = contract.ConsentUpdated();
             event.watch((error, result) => {
               if (!error) {
-                if (result.args.id === consent.id && result.args.state.toString(10) === state.toString()) {
+                if (result.args.id.toString(10) === consent.id && result.args.state.toString(10) === state.toString()) {
                   if (result.args.updated === true) {
                     this.$(".state").text(stateText);
                     this.$(".acceptConsent").hide();
