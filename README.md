@@ -32,3 +32,13 @@ An example can be seen in _wallet/app/routes/consents.js_.
 The contract can be removed by calling the `kill()` function, which can only be called by the account that deployed the contract.
 
 https://ethereum.github.io/browser-solidity can be used to experiment with, develop and debug the contract.
+
+##Create consent
+1. Create two accounts: for data owner and data requestor (both should have some money on them).
+2. `cd dataowner`
+3. `make`
+4. `node index.js datao@example.com password 0x9a804CF13E3defb1043D2B81BE95D14C787c94Dc`
+5. `cd datarequestor`
+6. `make`
+7. `node index.js node index.js datar@example.com password 0xA04A6A76F1E23D80E075f490a2E23daACB65d0A9 person@gmail.com datao@example.com`
+8. Approve/Disaprove from wallet app

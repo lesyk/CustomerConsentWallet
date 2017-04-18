@@ -25,4 +25,4 @@ consentFlow.discoverIdentityService((err, result, idServiceAddress) => {
 
 consentFlow.respondEthAddress(identity, email, address, ttl, priority);
 
-setTimeout(() => consentFlow.dataRequested().then((result) => consentFlow.provideData(result.args.customer, result.args.data_requester, result.args.id.toString(10), "http://node0/data1.xml")), 1000);
+setTimeout(() => consentFlow.dataRequested().then((result) => consentFlow.provideData(result.args.customer, result.args.data_requester, result.args.id.toString(10), "http://url.to.the.customer.data/data1.xml")), 1000);
