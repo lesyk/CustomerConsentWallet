@@ -23,6 +23,6 @@ export default Base.extend({
 
   invalidate(data) {
     this.get('web3').delete();
-    return Promise.resolve();
+    return Ember.RSVP.Promise.resolve();
   }
 });
