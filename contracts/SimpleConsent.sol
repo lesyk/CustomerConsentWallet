@@ -27,19 +27,19 @@ contract SimpleConsent {
     }
 
     function requestConsent() atState(State.Created) {
-        // TODO check that msg sender is data_requester
+        // TODO: check that msg sender is data_requester
         state = State.Requested;
         ConsentRequested(id, data_requester, customer, data_owner);
     }
 
     function giveConsent() atState(State.Requested) {
-        // TODO check that msg.sender is customer
+        // TODO: check that msg.sender is customer
         state = State.Given;
         ConsentGiven(id, data_requester, customer, data_owner);
     }
 
     function rejectConsent() atState(State.Requested) {
-        // TODO check that msg.sender is customer
+        // TODO: check that msg.sender is customer
         state = State.Rejected;
         ConsentRejected(id, data_requester, customer, data_owner);
     }

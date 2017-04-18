@@ -9,7 +9,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   setupController: function(controller, model) {
     this._super(controller, model);
-    console.log('setupController')
+    console.log('setupController');
 
     let web3 = this.get("web3").instance();
     this.set('log', []);

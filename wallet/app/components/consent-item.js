@@ -51,6 +51,7 @@ export default Ember.Component.extend({
         });
       });
     },
+    
     rejectConsent: function(consent) {
       let web3 = this.get("web3").instance();
       let contract = this.get("consentLib").initialize(web3).getConsentContract();
