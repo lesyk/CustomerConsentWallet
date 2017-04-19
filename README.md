@@ -40,5 +40,5 @@ https://ethereum.github.io/browser-solidity can be used to experiment with, deve
 4. `node index.js datao@example.com password 0x9a804CF13E3defb1043D2B81BE95D14C787c94Dc`
 5. `cd datarequestor`
 6. `make`
-7. `node index.js node index.js datar@example.com password 0xA04A6A76F1E23D80E075f490a2E23daACB65d0A9 person@gmail.com datao@example.com`
+7. `node index.js datar@example.com password 0xA04A6A76F1E23D80E075f490a2E23daACB65d0A9 person@gmail.com datao@example.com`
 8. Approve/Disaprove from wallet app
