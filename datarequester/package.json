@@ -1,13 +1,25 @@
 {
-  "name": "idservice",
-  "version": "0.1.0",
+  "name": "datarequester",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "author": "",
-  "license": "MIT",
   "dependencies": {
-    "consentlib": "file:../consentlib",
-    "web3": "^0.16.0",
-    "solc": "0.4.7"
+    "consentlib": "file:./../consentlib",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "web3": "^0.18.4"
+  },
+  "devDependencies": {
+    "react-scripts": "0.9.5"
+  },
+  "engines": {
+    "node": ">= 4.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
