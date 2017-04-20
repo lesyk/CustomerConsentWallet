@@ -1,11 +1,11 @@
 "use strict";
 
-class ConsentFlow {
+const axios = require('axios');
 
-    constructor(web3, whisper, solc) {
+class ConsentFlow {
+    constructor(web3, whisper) {
         this.web3 = web3;
         this.whisper = whisper;
-        this.solc = solc;
         this.idServiceAddress = null;
         this.gasPrice = 50000000000;
         this.gas = 4000000;
@@ -281,34 +281,49 @@ class ConsentFlow {
 
         console.log("Deploying contract", contractName);
 
-        let compiledContract = this.solc.compile(source, 1);
-        let abi = compiledContract.contracts[contractName].interface;
+        axios({
+            method:'post',
+            url:'http://localhost:3000/',
+            headers: { 'Access-Control-Allow-Origin': '*' },
+            params: {
+                source: ``,
+            }
+        })
+        .then(function (response) {
+            console.log(response.data);
+            let compiledContract = response.data;
 
-        console.log('Abi', abi);
+            let abi = compiledContract.contracts[contractName].interface;
+            console.log('Abi', abi);
 
-        let contract = this.web3.eth.contract(JSON.parse(abi));
-        let bytecode = compiledContract.contracts[contractName].bytecode;
-        let gasEstimate = this.web3.eth.estimateGas({data: bytecode});
+            let contract = this.web3.eth.contract(JSON.parse(abi));
+            let bytecode = compiledContract.contracts[contractName].bytecode;
+            let gasEstimate = this.web3.eth.estimateGas({data: bytecode});
 
-        let newContract = contract.new({
-            from: address,
-            data: bytecode,
-            value: 30000000000000000000,
-            gas: gasEstimate
-        }, (err, myContract) => {
-            if (!err) {
-                if (!myContract.address) {
-                    console.log("Hash: ", myContract.transactionHash);
-                } else {
-                    console.log("Address: ", myContract.address);
+            let newContract = contract.new({
+                from: address,
+                data: bytecode,
+                value: 30000000000000000000,
+                gas: gasEstimate
+            }, (err, myContract) => {
+                if (!err) {
+                    if (!myContract.address) {
+                        console.log("Hash: ", myContract.transactionHash);
+                    } else {
+                        console.log("Address: ", myContract.address);
+                    }
                 }
-            }
-            else {
-                console.log(err);
-            }
-        });
+                else {
+                    console.log(err);
+                }
+            });
 
-        return newContract;
+            return newContract;
+        })
+        .catch(function (error) {
+            console.log(error);
+            return "";
+        });
     }
 
     newConsentId() {

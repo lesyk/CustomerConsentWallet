@@ -1,12 +1,11 @@
 {
   "name": "consentlib",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "solc": "0.4.7",
-    "web3": "^0.16.0"
+    "axios": "^0.16.1"
   }
 }
