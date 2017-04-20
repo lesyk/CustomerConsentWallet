@@ -189,9 +189,7 @@ class ConsentFlow {
     }
 
     lookupWhisperIds(from, to, emails, ttl, priority, timeout) {
-
         let promise = new Promise((resolve, reject) => {
-
             let whisperIds = new Map();
             let idLookupFilter = this.whisper.filter(to, from, "identity-service-lookup");
 
@@ -220,7 +218,6 @@ class ConsentFlow {
     }
 
     lookupEthAddresses(self, whisperIds, ttl, priority, timeout) {
-
         let promise = new Promise((resolve, reject) => {
 
             let ethAddresses = new Map();
@@ -253,7 +250,6 @@ class ConsentFlow {
     }
 
     respondEthAddress(self, email, address, ttl, priority) {
-
         let addressLookupFilter = this.whisper.filter(null, self, "eth-address-lookup");
 
         this.whisper.watch(addressLookupFilter, (err, result, payload) => {
@@ -278,7 +274,6 @@ class ConsentFlow {
     }
 
     newContract(address, source, contractName) {
-
         console.log("Deploying contract", contractName);
 
         axios({
@@ -331,7 +326,6 @@ class ConsentFlow {
     }
 
     requestConsent(customer, dataOwner, consentId) {
-
         let contract = this.web3.eth.contract(this.contractAbi).at(this.contractAddress);
         let hexCustomer = this.web3.toHex(customer);
         let hexDataOwner = this.web3.toHex(dataOwner);
@@ -357,7 +351,6 @@ class ConsentFlow {
     }
 
     consentGiven(consentId) {
-
         let contract = this.getConsentContract();
 
         console.log("Listening for consent response", consentId);
@@ -381,7 +374,6 @@ class ConsentFlow {
     }
 
     requestData(customer, dataOwner, consentId) {
-
         let contract = this.getConsentContract();
         let hexCustomer = this.web3.toHex(customer);
         let hexDataOwner = this.web3.toHex(dataOwner);
@@ -407,7 +399,6 @@ class ConsentFlow {
     }
 
     provideData(customer, dataRequester, consentId, payload) {
-
         let contract = this.getConsentContract();
         let hexCustomer = this.web3.toHex(customer);
         let hexDataRequester = this.web3.toHex(dataRequester);
@@ -434,9 +425,7 @@ class ConsentFlow {
     }
 
     dataRequested() {
-
         let contract = this.getConsentContract();
-
         console.log("Listening for data request");
 
         let promise = new Promise((resolve, reject) => {
@@ -455,7 +444,6 @@ class ConsentFlow {
     }
 
     dataProvided(consentId) {
-
         let contract = this.getConsentContract();
 
         console.log("Listening for data", consentId);
