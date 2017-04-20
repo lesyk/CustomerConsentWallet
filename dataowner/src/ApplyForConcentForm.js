@@ -98,7 +98,7 @@ class ApplyForConcentForm extends React.Component {
             </div>
             <div className="form-group">
               <div className="col-sm-offset-2 col-sm-10">
-                <button className="btn btn-default" onClick={this.makeConsentRequest}>Apply for Consent</button>
+                <button className="btn btn-default" onClick={this.makeConsentRequest}>Advertise my self</button>
               </div>
             </div>
           </form>
