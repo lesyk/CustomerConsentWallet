@@ -53,10 +53,12 @@ class ApplyForConcentForm extends React.Component {
     consentFlow.respondEthAddress(identity, this.state.dataOwnerEmail, this.state.address, ttl, priority);
 
     setTimeout(() => consentFlow.dataRequested().then((result) => {
+      this.setState(prevState => ({ messages: prevState.messages + `\nData request received ${result}` }));
+
       consentFlow.provideData(result.args.customer, result.args.data_requester, result.args.id.toString(10), "http://url.to.the.customer.data/data1.xml").then((result) => {
         this.setState(prevState => ({ messages: prevState.messages + `\nData provided at transaction ${result}`, finished: true }));
       }).catch((error) => {
-        this.setState(prevState => ({ messages: prevState.messages + `\nFailed to provide data${error}`, finished: true }));
+        this.setState(prevState => ({ messages: prevState.messages + `\nFailed to provide data ${error}`, finished: true }));
       })
     }), 1000);
   }
