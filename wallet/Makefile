@@ -4,11 +4,10 @@ clean:
 	rm -rf bower_components
 	rm -rf dist
 consent-wallet:
-	npm install
+	yarn install
 	node_modules/.bin/bower install
-	node_modules/.bin/ember build --environment=production
+	node_modules/.bin/ember build --environment=development
 consent-docker: clean consent-wallet
-	docker build -t consent-wallet .
-	docker tag consent-wallet enettet/consent-wallet
+	docker build -t nettet/consent-wallet:latest .
 push:
-	docker push enettet/consent-wallet
+	docker push enettet/consent-wallet:latest

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from "react";
 
 const Web3 = require('web3');
 const ConsentLib = require('consentlib');
@@ -27,7 +27,7 @@ class ApplyForConcentForm extends React.Component {
     this.setState({
       [name]: value
     });
-  }
+  };
 
   makeConsentRequest = (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ class ApplyForConcentForm extends React.Component {
     this.setState({submitted: true});
 
     let web3 = new Web3();
-    web3.setProvider(new web3.providers.HttpProvider('http://node0:8545'));
+    web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
     let whisper = new ConsentLib.Whisper(web3);
     let consentFlow = new ConsentLib.ConsentFlow(web3, whisper);
@@ -77,7 +77,7 @@ class ApplyForConcentForm extends React.Component {
         this.setState(prevState => ({ messages: prevState.messages + `\nFailed read data provided ${error}`, finished: true }));
       })
     }, 1000);
-  }
+  };
 
   render() {
     return (
