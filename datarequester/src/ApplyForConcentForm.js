@@ -99,31 +99,31 @@ class ApplyForConcentForm extends React.Component {
             <div className="form-group">
               <label className="col-sm-2 control-label">Data Requestor Email</label>
               <div className="col-sm-10">
-                <input className="form-control" type="text" value={this.state.dataRequestorEmail} onChange={this.handleChange} />
+                <input className="form-control" type="text" name="dataRequestorEmail" value={this.state.dataRequestorEmail} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">
               <label className="col-sm-2 control-label">Password</label>
               <div className="col-sm-10">
-                <input className="form-control"  type="text" value={this.state.password} onChange={this.handleChange} />
+                <input className="form-control"  type="text" name="password" value={this.state.password} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">
               <label className="col-sm-2 control-label">Address</label>
               <div className="col-sm-10">
-                <input className="form-control"  type="text" value={this.state.address} onChange={this.handleChange} />
+                <input className="form-control"  type="text" name="address" value={this.state.address} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">
               <label className="col-sm-2 control-label">Data Owner Email</label>
               <div className="col-sm-10">
-                <input className="form-control"  type="text" value={this.state.ownerEmail} onChange={this.handleChange} />
+                <input className="form-control"  type="text" name="ownerEmail" value={this.state.ownerEmail} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">
               <label className="col-sm-2 control-label">Customer's Email</label>
               <div className="col-sm-10">
-                <input className="form-control"  type="text" value={this.state.customerEmail} onChange={this.handleChange} />
+                <input className="form-control"  type="text" name="customerEmail" value={this.state.customerEmail} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">

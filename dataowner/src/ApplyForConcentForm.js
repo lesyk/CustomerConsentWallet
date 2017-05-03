@@ -83,19 +83,19 @@ class ApplyForConcentForm extends React.Component {
             <div className="form-group">
               <label className="col-sm-2 control-label">Data Owner Email</label>
               <div className="col-sm-10">
-                <input className="form-control" type="text" value={this.state.dataOwnerEmail} onChange={this.handleChange} />
+                <input className="form-control" type="text" name="dataOwnerEmail" value={this.state.dataOwnerEmail} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">
               <label className="col-sm-2 control-label">Password</label>
               <div className="col-sm-10">
-                <input className="form-control" type="text" value={this.state.password} onChange={this.handleChange} />
+                <input className="form-control" type="text" name="password" value={this.state.password} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">
               <label className="col-sm-2 control-label">Address</label>
               <div className="col-sm-10">
-                <input className="form-control" type="text" value={this.state.address} onChange={this.handleChange} />
+                <input className="form-control" type="text" name="address" value={this.state.address} onChange={this.handleChange} />
               </div>
             </div>
             <div className="form-group">
