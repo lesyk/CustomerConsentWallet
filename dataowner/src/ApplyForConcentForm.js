@@ -6,7 +6,7 @@ const ConsentLib = require('consentlib');
 class ApplyForConcentForm extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       dataOwnerEmail: "datao@example.com",
       password: "password",
@@ -32,7 +32,7 @@ class ApplyForConcentForm extends React.Component {
     this.setState({submitted: true});
 
     let web3 = new Web3();
-    web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+    web3.setProvider(new web3.providers.HttpProvider('http://node0:8545'));
 
     let whisper = new ConsentLib.Whisper(web3);
     let consentFlow = new ConsentLib.ConsentFlow(web3, whisper);
@@ -63,7 +63,7 @@ class ApplyForConcentForm extends React.Component {
     }), 1000);
   }
 
-  render() {  
+  render() {
     return (
       <div>
       {this.state.submitted ? (
